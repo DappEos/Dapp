@@ -1,0 +1,12 @@
+.touch {
+  user-select: none;
+  user-drag: none;
+  -khtml-user-drag: none;
+  -webkit-user-drag: none;
+}
+.touch-x {
+  touch-action: pan-x;
+}
+.touch-y {
+  touch-action: pan-y;
+}

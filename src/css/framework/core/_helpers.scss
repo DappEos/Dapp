@@ -1,0 +1,48 @@
+.backdrop {
+  display: none;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: transparent;
+  transition: background .28s ease-in;
+
+  &.active {
+    display: block;
+    background: $backdrop-background;
+  }
+}
+
+.round-borders {
+  border-radius: $generic-border-radius !important;
+}
+
+.generic-margin, .group > * {
+  margin: 5px;
+}
+
+.no-transition {
+  transition: none !important;
+}
+
+.transition-0 {
+  transition: 0s !important;
+}
+
+.glossy {
+  background-image: linear-gradient(to bottom, rgba(white, .3), rgba(white, 0) 50%, rgba(black, .12) 51%, rgba(black, .04)) !important;
+}
+
+/* body */
+.body-fullscreen-mixin, .body-prevent-scroll {
+  overflow: hidden !important;
+}
+
+a.link {
+  outline: 0;
+  color: inherit;
+  text-decoration: none;
+}
