@@ -3,7 +3,10 @@ $space-x-base: $space-base;
 $space-y-base: $space-base;
 $generic-border-radius: 2px !default;
 $generic-hover-transition: .3s cubic-bezier(.25, .8, .5, 1) !default;
+$body-background: white !default;
+$body-color: #0c0c0c !default;
 
+$typography-font-family: 'Roboto', '-apple-system', 'Helvetica Neue', Helvetica, Arial, sans-serif !default;
 
 // Max width at which point
 // current size ends
@@ -25,6 +28,23 @@ $sizes : (
   md: $breakpoint-sm + 1,
   lg: $breakpoint-md + 1,
   xl: $breakpoint-lg + 1,
+) !default;
+
+$text-weights : (
+  thin: 100,
+  light: 300,
+  regular: 400,
+  medium: 500,
+  bold: 700,
+  bolder: 900
+) !default;
+
+$spaces: (
+  xs: (x: $space-x-base * .25, y: $space-y-base * .25),
+  sm: (x: $space-x-base * .5, y: $space-y-base * .5),
+  md: (x: $space-x-base, y: $space-y-base),
+  lg: (x: $space-x-base * 1.5, y: $space-y-base * 1.5),
+  xl: (x: $space-x-base * 3, y: $space-y-base * 3)
 ) !default;
 
 $breakpoint-xs-min : 0;
@@ -64,14 +84,6 @@ $inset-shadow: "0 7px 9px -7px alpha($shadow-color, .7) inset" !default;
 $elevation-umbra: rgba($shadow-color, .2);
 $elevation-penumbra: rgba($shadow-color, .14);
 $elevation-ambient: rgba($shadow-color, .12);
-
-$spaces: (
-  xs: (x: $space-x-base * .25, y: $space-y-base * .25),
-  sm: (x: $space-x-base * .5, y: $space-y-base * .5),
-  md: (x: $space-x-base, y: $space-y-base),
-  lg: (x: $space-x-base * 1.5, y: $space-y-base * 1.5),
-  xl: (x: $space-x-base * 3, y: $space-y-base * 3)
-) !default;
 
 $primary   : #027be3 !default;
 $secondary : #26A69A !default;

@@ -1,2 +1,11 @@
 @import '~element-ui/lib/theme-chalk/index.css';
+@import '~buefy/dist/buefy.css';
+//
+$primary: #0c365b;
+$secondary: #052846;
+$typography-font-family: 'Segoe UI', Frutiger, 'Frutiger Linotype', 'Dejavu Sans', 'Helvetica Neue', Arial, sans-serif !default;
 @import './framework/all';
+
+body {
+  margin: 0;
+}

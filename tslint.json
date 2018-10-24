@@ -5,10 +5,13 @@
   ],
   "linterOptions": {
     "exclude": [
-      "node_modules/**"
+      "node_modules/**",
+      "src/**/*.vue"
     ]
   },
   "rules": {
+    "semicolon": false,
+    "trailing-comma": "ignore",
     "quotemark": [true, "single"],
     "indent": [true, "spaces", 2],
     "interface-name": false,
