@@ -139,7 +139,7 @@
           </el-col>
           <el-col :span="21" class="ml-sm text-white">
             <div>Bet to get: <span class="inline-block text-bold" style="font-size: 1.5rem;">0.0001</span> DICE</div>
-            <div class="text-amber-8">Bet now for FREE tokens 1000% DICE</div>
+            <div class="text-amber-8">Bet now for FREE tokens 100% DICE</div>
           </el-col>
         </el-row>
       </el-col>
