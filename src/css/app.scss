@@ -9,3 +9,7 @@ $typography-font-family: 'Segoe UI', Frutiger, 'Frutiger Linotype', 'Dejavu Sans
 body {
   margin: 0;
 }
+
+.table-column:hover {
+  color: $primary !important;
+}

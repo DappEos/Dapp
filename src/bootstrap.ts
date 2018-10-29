@@ -1,5 +1,21 @@
 import {VueConstructor} from 'vue'
-import {Container, Header, Main, Col, Row, Button, Menu, MenuItem, Submenu, Card, Slider} from 'element-ui'
+import {
+  Container,
+  Header,
+  Main,
+  Col,
+  Row,
+  Button,
+  Menu,
+  MenuItem,
+  Submenu,
+  Card,
+  Slider,
+  Table,
+  TableColumn,
+  Tabs,
+  TabPane
+} from 'element-ui'
 
 export default (Vue: VueConstructor) => {
   Vue.use(Header)
@@ -13,4 +29,8 @@ export default (Vue: VueConstructor) => {
   Vue.use(Submenu)
   Vue.use(Card)
   Vue.use(Slider)
+  Vue.use(Table)
+  Vue.use(TableColumn)
+  Vue.use(Tabs)
+  Vue.use(TabPane)
 }

@@ -34,7 +34,10 @@
           <el-col class="pa-sm round-borders bg-blue-grey-6">
             <el-row class="pa-xs text-white" type="flex" align="bottom">
               <el-col class="text-left" :span="8">
-                <span class="inline-block">EOS</span>
+                <img
+                  src="/img/poker-chips-stack.svg"
+                  style="vertical-align: bottom; width: 2rem; height: 2rem;"
+                />
               </el-col>
               <el-col class="text-center" :span="8">
                 <span class="inline-block text-weight-bold" style="font-size: 1.2rem;">0.0001</span>
@@ -60,7 +63,10 @@
       <el-col class="bg-primary round-borders pa-sm ml-sm" :span="6">
         <el-row class="pa-sm text-white" type="flex" align="bottom">
           <el-col class="text-left" :span="5">
-            <span class="inline-block">EOS</span>
+            <img
+              src="/img/poker-chips-stack.svg"
+              style="vertical-align: bottom; width: 2rem; height: 2rem;"
+            />
           </el-col>
           <el-col>
             <span class="inline-block text-weight-bold" style="font-size: 1.2rem;">0.0001</span>
@@ -114,7 +120,6 @@
     <el-row class="ma-lg" type="flex" justify="center">
       <el-col :span="14" class="text-center">
         <div class="block">
-          <!-- <el-slider class="is-large" :value="50" show-tooltip :step="25" input-size="large" /> -->
           <vue-slider ref="slider2" :value="50" :height="20" :dot-size="25" :interval="25"></vue-slider>
         </div>
       </el-col>
@@ -127,27 +132,33 @@
       </el-col>
     </el-row>
     <el-row class="mt-xl" type="flex" justify="center">
-      <el-col :span="9" class="bg-primary pa-sm text-center" style="border-radius: 290486px;">
+      <el-col :span="9" class="bg-primary pa-sm" style="border-radius: 290486px;">
         <el-row type="flex" align="middle">
           <el-col :span="3">
             <img class='vertical-middle app-icon' src="/img/poker-chip-icon.svg" />
           </el-col>
-          <el-col class="ml-sm">BetDice</el-col>
+          <el-col :span="21" class="ml-sm text-white">
+            <div>Bet to get: <span class="inline-block text-bold" style="font-size: 1.5rem;">0.0001</span> DICE</div>
+            <div class="text-amber-8">Bet now for FREE tokens 1000% DICE</div>
+          </el-col>
         </el-row>
       </el-col>
     </el-row>
+    <tracks class="mt-md" />
   </base-layout>
 </template>
 
 <script lang="ts">
 import VueSlider from 'vue-slider-component'
+import Tracks from '@/components/Tracks.vue'
 import { Component, Vue } from 'vue-property-decorator'
 import BaseLayout from '@/components/layouts/Base.vue'
 
 @Component({
   components: {
     BaseLayout,
-    VueSlider
+    VueSlider,
+    Tracks
   }
 })
 export default class Home extends Vue {}
