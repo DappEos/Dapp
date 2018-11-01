@@ -9,11 +9,15 @@
       </el-row>
     </el-col>
     <el-col class="text-white">
-      <el-row type="flex">
+      <el-row type="flex" align="middle">
         <el-col>
-          <el-button type="primary" icon="el-icon-star-on" size="small" circle />
+          <el-button class="vertical-middle" type="primary" size="small" circle>
+            <img src="/img/ios-paper-plane.svg" style="width: 1.2rem" />
+          </el-button>
           <span class="mr-md" />
-          <el-button type="primary" icon="el-icon-star-on" size="small" circle />
+          <el-button class="vertical-middle" type="primary" size="small" circle>
+            <img src="/img/logo-twitter.svg" style="width: 1.2rem" />
+          </el-button>
         </el-col>
         <el-col>
           <el-button type="primary" size="small">Lucky Draw</el-button>
@@ -31,25 +35,44 @@
           <el-button class="text-white" type="text" size="small">Invite</el-button>
         </el-col>
         <el-col :span="6">
-          <el-button class="text-white" type="text" size="small">How to play?</el-button>
+          <el-button
+            class="text-white"
+            type="text"
+            size="small"
+            @click="showHelp = true"
+          >How to play?</el-button>
         </el-col>
         <el-col :span="4">
           <el-button class="text-white" type="text" size="small">DICE</el-button>
         </el-col>
         <el-col :span="4">
-          <el-button type="primary" size="small">Login</el-button>
+          <el-button type="primary" size="small">
+            <span class="inline-block vertical-middle">
+              <img src="/img/ios-person.svg" style="width: 1rem" />
+            </span>
+            <span class="text-weight-bold ml-sm mr-sm inline-block vertical-middle">Login</span>
+          </el-button>
         </el-col>
       </el-row>
     </el-col>
+    <help-modal v-model="showHelp" />
   </el-row>
 </template>
 
 <script lang="ts">
+import { SHOW_HELP } from '@/constants'
+import HelpModal from '@/components/Help.vue'
 import {Vue, Component} from 'vue-property-decorator'
 
-@Component
+@Component({
+  components: {HelpModal}
+})
 export default class AppBar extends Vue {
+  protected showHelp = false
 
+  mounted() {
+    this.$root.$on(SHOW_HELP, () => this.showHelp = true)
+  }
 }
 </script>
 

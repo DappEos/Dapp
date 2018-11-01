@@ -14,7 +14,8 @@ import {
   Table,
   TableColumn,
   Tabs,
-  TabPane
+  TabPane,
+  Dialog
 } from 'element-ui'
 
 export default (Vue: VueConstructor) => {
@@ -33,4 +34,5 @@ export default (Vue: VueConstructor) => {
   Vue.use(TableColumn)
   Vue.use(Tabs)
   Vue.use(TabPane)
+  Vue.use(Dialog)
 }

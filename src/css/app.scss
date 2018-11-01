@@ -13,3 +13,8 @@ body {
 .table-column:hover {
   color: $primary !important;
 }
+
+.border-lr-secondary {
+  border-left: solid $secondary;
+  border-right: solid $secondary;
+}

@@ -53,9 +53,9 @@
             :span="12"
           >
             <el-row type="flex" justify="center">
-              <el-col>1/2</el-col>
-              <el-col>2X</el-col>
-              <el-col>MAX</el-col>
+              <el-col class="pr-sm">1/2</el-col>
+              <el-col class="pl-sm pr-sm border-lr-secondary">2X</el-col>
+              <el-col class="pl-sm">MAX</el-col>
             </el-row>
           </el-col>
         </el-row>
@@ -86,11 +86,11 @@
             </div>
             <div class="columns">
               <div class="column">
-                <span class="inline-blocks" style="font-size: 2rem; font-weight: bold">501</span>
+                <span class="inline-blocks" style="font-size: 2rem; font-weight: bold">50</span>
               </div>
             </div>
           </el-col>
-          <el-col class="text-center pa-xs">
+          <el-col class="border-lr-secondary text-center pa-xs">
             <div class="columns">
               <div class="column">
                 <span class="inline-blocks text-light">PAYOUT</span>
@@ -118,7 +118,7 @@
       </el-col>
     </el-row>
     <el-row class="ma-lg" type="flex" justify="center">
-      <el-col :span="14" class="text-center">
+      <el-col :span="15" style="border-radius: 40px;" class="pa-md text-center bg-primary">
         <div class="block">
           <vue-slider ref="slider2" :value="50" :height="20" :dot-size="25" :interval="25"></vue-slider>
         </div>
@@ -137,9 +137,16 @@
           <el-col :span="3">
             <img class='vertical-middle app-icon' src="/img/poker-chip-icon.svg" />
           </el-col>
-          <el-col :span="21" class="ml-sm text-white">
+          <el-col :span="18" class="ml-sm text-white">
             <div>Bet to get: <span class="inline-block text-bold" style="font-size: 1.5rem;">0.0001</span> DICE</div>
             <div class="text-amber-8">Bet now for FREE tokens 100% DICE</div>
+          </el-col>
+          <el-col :span="2" class="text-right cursor-pointer" @click.native="showHelp">
+            <img
+              src="/img/ios-help-circle-outline.svg"
+              class="vertical-middle"
+              style="width: 2rem"
+            />
           </el-col>
         </el-row>
       </el-col>
@@ -149,6 +156,7 @@
 </template>
 
 <script lang="ts">
+import { SHOW_HELP } from '@/constants'
 import VueSlider from 'vue-slider-component'
 import Tracks from '@/components/Tracks.vue'
 import { Component, Vue } from 'vue-property-decorator'
@@ -161,5 +169,10 @@ import BaseLayout from '@/components/layouts/Base.vue'
     Tracks
   }
 })
-export default class Home extends Vue {}
+export default class Home extends Vue {
+
+  showHelp() {
+    this.$root.$emit(SHOW_HELP)
+  }
+}
 </script>
