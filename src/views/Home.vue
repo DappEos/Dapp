@@ -118,9 +118,21 @@
       </el-col>
     </el-row>
     <el-row class="ma-lg" type="flex" justify="center">
-      <el-col :span="15" style="border-radius: 40px;" class="pa-md text-center bg-primary">
+      <el-col :span="15" style="border-radius: 40px;" class="pa-md text-center bg-primar">
         <div class="block">
-          <vue-slider ref="slider2" :value="50" :height="20" :dot-size="25" :interval="25"></vue-slider>
+          <vue-slider
+            :max="100"
+            :height="20"
+            :dot-size="25"
+            :interval="25"
+            piecewise-label
+            v-model="sliderValue"
+            :formatter="n => n < 1 ? 1 : n"
+            :label-style="{color: 'white'}"
+            :bg-style="{background: '#f02c67'}"
+            :labelActiveStyle="{color: 'var(--color-info)'}"
+            :process-style="{background: '#03f53c'}"
+          />
         </div>
       </el-col>
     </el-row>
@@ -159,8 +171,8 @@
 import { SHOW_HELP } from '@/constants'
 import VueSlider from 'vue-slider-component'
 import Tracks from '@/components/Tracks.vue'
-import { Component, Vue } from 'vue-property-decorator'
 import BaseLayout from '@/components/layouts/Base.vue'
+import { Component, Vue } from 'vue-property-decorator'
 
 @Component({
   components: {
@@ -171,7 +183,9 @@ import BaseLayout from '@/components/layouts/Base.vue'
 })
 export default class Home extends Vue {
 
-  showHelp() {
+  public sliderValue = 50;
+
+  public showHelp() {
     this.$root.$emit(SHOW_HELP)
   }
 }
