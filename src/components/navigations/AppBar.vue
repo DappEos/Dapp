@@ -46,7 +46,7 @@
           <el-button class="text-white" type="text" size="small">DICE</el-button>
         </el-col>
         <el-col :span="4">
-          <el-button type="primary" size="small">
+          <el-button type="primary" size="small" @click="login">
             <span class="inline-block vertical-middle">
               <img src="/img/ios-person.svg" style="width: 1rem" />
             </span>
@@ -63,14 +63,16 @@
 import { SHOW_HELP } from '@/constants'
 import HelpModal from '@/components/Help.vue'
 import {Vue, Component} from 'vue-property-decorator'
+import AuthMixin from '@/mixins/auth'
 
 @Component({
-  components: {HelpModal}
+  components: {HelpModal},
+  mixins: [AuthMixin]
 })
 export default class AppBar extends Vue {
   protected showHelp = false
 
-  mounted() {
+  private mounted() {
     this.$root.$on(SHOW_HELP, () => this.showHelp = true)
   }
 }
