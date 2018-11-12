@@ -23,7 +23,7 @@
 import bets from '@/layer/bets'
 import AuthMixin from '@/mixins/auth'
 import AppTable from '@/components/table'
-import { Vue, Component } from 'vue-property-decorator'
+import { Vue, Component, Watch } from 'vue-property-decorator'
 import { TableHeader } from '@/components/table'
 import { Notification } from 'element-ui';
 
@@ -41,6 +41,13 @@ export default class All extends Vue {
     {title: 'Won', property: 'won'},
   ];
 
+  @Watch('currentUser')
+  private watchUser(newVal: any) {
+    if (newVal) {
+      this.getBets()
+    }
+  }
+
   private async getBets() {
     if (!(this as any).currentUser) {
       return
@@ -56,10 +63,6 @@ export default class All extends Vue {
         message: 'Unable to fetch statistics!'
       })
     }
-  }
-
-  private updated() {
-    this.getBets()
   }
 
   private mounted() {
