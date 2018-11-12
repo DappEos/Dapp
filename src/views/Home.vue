@@ -86,7 +86,12 @@
             </div>
             <div class="columns">
               <div class="column">
-                <span class="inline-blocks" style="font-size: 2rem; font-weight: bold">50</span>
+                <span  class="vertical-middle" style="font-size: 2rem; font-weight: bold">
+                  {{ currentThreshold }}
+                </span>
+                <span>
+                  <img src="/img/md-arrow-down.svg" class="vertical-middle" style="width: 2rem" />
+                </span>
               </div>
             </div>
           </el-col>
@@ -119,24 +124,10 @@
     </el-row>
     <el-row class="ma-lg" type="flex" justify="center">
       <el-col :span="15" style="border-radius: 40px;" class="pa-md text-center bg-primar">
-        <div class="block">
-          <vue-slider
-            :max="100"
-            :height="20"
-            :dot-size="25"
-            :interval="25"
-            piecewise-label
-            v-model="sliderValue"
-            :formatter="n => n < 1 ? 1 : n"
-            :label-style="{color: 'white'}"
-            :bg-style="{background: '#f02c67'}"
-            :labelActiveStyle="{color: 'var(--color-info)'}"
-            :process-style="{background: '#03f53c'}"
-          />
-        </div>
+        <div class="block"><threshold-picker /></div>
       </el-col>
     </el-row>
-    <el-row type="flex" justify="center">
+    <el-row v-if="!currentUser" type="flex" justify="center">
       <el-col :span="3" class="text-center">
         <button class="full-width button is-info is-rounded is-medium">
           Login
@@ -168,22 +159,26 @@
 </template>
 
 <script lang="ts">
+import AuthMixin from '@/mixins/auth'
 import { SHOW_HELP } from '@/constants'
-import VueSlider from 'vue-slider-component'
 import Tracks from '@/components/Tracks.vue'
 import BaseLayout from '@/components/layouts/Base.vue'
 import { Component, Vue } from 'vue-property-decorator'
+import ThresholdPicker from '@/components/ThresholdPicker.vue'
 
 @Component({
+  mixins: [AuthMixin],
   components: {
+    Tracks,
     BaseLayout,
-    VueSlider,
-    Tracks
+    ThresholdPicker
   }
 })
 export default class Home extends Vue {
 
-  public sliderValue = 50;
+  get currentThreshold() {
+    return this.$store.state.threshold
+  }
 
   public showHelp() {
     this.$root.$emit(SHOW_HELP)
