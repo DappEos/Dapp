@@ -33,16 +33,17 @@
         <el-row class="round-borders" type="flex" align="middle">
           <el-col class="pa-sm round-borders bg-blue-grey-6">
             <el-row class="pa-xs text-white" type="flex" align="bottom">
-              <el-col class="text-left" :span="8">
+              <el-col class="text-left" :span="5">
                 <img
                   src="/img/poker-chips-stack.svg"
-                  style="vertical-align: bottom; width: 2rem; height: 2rem;"
+                  class="vertical-bottom"
+                  style="width: 2rem; height: 2rem;"
                 />
               </el-col>
-              <el-col class="text-center" :span="8">
-                <span class="inline-block text-weight-bold" style="font-size: 1.2rem;">0.0001</span>
+              <el-col class="text-center" :span="14">
+                <el-input class="amount-input" v-model="betAmount" />
               </el-col>
-              <el-col class="text-right text-light" :span="8">
+              <el-col class="text-right text-light" :span="5">
                 <span class="inline-block">EOS</span>
               </el-col>
             </el-row>
@@ -52,10 +53,24 @@
             style="font-size: 1.3rem;"
             :span="12"
           >
-            <el-row type="flex" justify="center">
-              <el-col class="pr-sm">1/2</el-col>
-              <el-col class="pl-sm pr-sm border-lr-secondary">2X</el-col>
-              <el-col class="pl-sm">MAX</el-col>
+            <el-row class="cursor-pointer" type="flex" justify="center">
+              <el-col class="pr-sm">
+                <el-button
+                  class="bg-primary text-white"
+                  size="small"
+                  @click="multiplyBet(0.5)"
+                >1/2</el-button>
+              </el-col>
+              <el-col class="pl-sm pr-sm border-lr-secondary">
+                <el-button
+                  class="bg-primary text-white"
+                  size="small"
+                  @click="multiplyBet(2)"
+                >2X</el-button>
+              </el-col>
+              <el-col class="pl-sm">
+                <el-button class="bg-primary text-white" size="small">MAX</el-button>
+              </el-col>
             </el-row>
           </el-col>
         </el-row>
@@ -69,7 +84,7 @@
             />
           </el-col>
           <el-col>
-            <span class="inline-block text-weight-bold" style="font-size: 1.2rem;">0.0001</span>
+            <span class="inline-block amount-text">{{ payoutOnWin }}</span>
             <span class="ml-sm inline-block text-light">EOS</span>
           </el-col>
         </el-row>
@@ -115,7 +130,7 @@
             </div>
             <div class="columns">
               <div class="column">
-                <span class="inline-blocks" style="font-size: 2rem; font-weight: bold">49%</span>
+                <span class="inline-blocks" style="font-size: 2rem; font-weight: bold">50%</span>
               </div>
             </div>
           </el-col>
@@ -129,7 +144,7 @@
     </el-row>
     <el-row v-if="!currentUser" type="flex" justify="center">
       <el-col :span="3" class="text-center">
-        <button class="full-width button is-info is-rounded is-medium">
+        <button class="full-width button is-info is-rounded is-medium" @click="login">
           Login
         </button>
       </el-col>
@@ -176,12 +191,26 @@ import ThresholdPicker from '@/components/ThresholdPicker.vue'
 })
 export default class Home extends Vue {
 
+  private betAmount: number = 1;
+
   get currentThreshold() {
     return this.$store.state.threshold
   }
 
+  get payoutOnWin() {
+    const {threshold} = this.$store.state
+    return Math.floor(96 / (97 - threshold) * this.betAmount * 10000) / 10000
+  }
+
   public showHelp() {
     this.$root.$emit(SHOW_HELP)
+  }
+
+  private multiplyBet(by: number) {
+    this.betAmount *= by;
+    // if(this.betAmount > this.store.eos.balance) {
+    //   this.betAmount = this.store.eos.balance;
+    // }
   }
 }
 </script>
