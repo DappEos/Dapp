@@ -9,6 +9,10 @@ export class Auth {
     return ScatterJs
   }
 
+  get hasIdentity() {
+    return this.scatterRef.scatter.identity
+  }
+
   public async bootstrap() {
     ScatterJs.plugins(new ScatterEOS())
     const connected = await ScatterJs.scatter.connect('app')

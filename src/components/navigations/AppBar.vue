@@ -46,11 +46,14 @@
           <el-button class="text-white" type="text" size="small">DICE</el-button>
         </el-col>
         <el-col :span="4">
-          <el-button type="primary" size="small" @click="login">
+          <el-button  v-if="!currentUser" type="primary" size="small" @click="login">
             <span class="inline-block vertical-middle">
               <img src="/img/ios-person.svg" style="width: 1rem" />
             </span>
             <span class="text-weight-bold ml-sm mr-sm inline-block vertical-middle">Login</span>
+          </el-button>
+          <el-button v-else type="danger" size="small" @click="logout">
+            <span class="text-weight-bold vertical-middle">Log out</span>
           </el-button>
         </el-col>
       </el-row>

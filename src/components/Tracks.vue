@@ -9,6 +9,7 @@
           </el-tab-pane>
           <el-tab-pane name="my_bets">
             <span slot="label" :class="isActiveClass('my_bets')">MY BETS</span>
+            <my-bets />
           </el-tab-pane>
           <el-tab-pane name="huge_wins">
             <span slot="label" :class="isActiveClass('huge_wins')">HUGE WINS</span>
@@ -27,10 +28,14 @@
 
 <script lang="ts">
 import AllTrack from '@/components/tracks/All.vue'
+import MyBets from '@/components/tracks/MyBets.vue'
 import {Vue, Component} from 'vue-property-decorator'
 
 @Component({
-  components: {AllTrack}
+  components: {
+    MyBets,
+    AllTrack
+  }
 })
 export default class Tracks extends Vue {
   public activePane: string = 'all_bets'
