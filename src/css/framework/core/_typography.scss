@@ -11,27 +11,38 @@ body {
   min-height: 100vh;
 }
 
-// for $heading, $value in $h-tags
-//   {$heading}
-//     font-size: $value.size
-//     font-weight: $value.weight
-//     if $value.line-height
-//       line-height: $value.line-height
-//     if $value.letter-spacing
-//       letter-spacing: $value.letter-spacing
-//     @media screen and (max-width $breakpoint-sm)
-//       font-size: ($value.size * .6)
+@each $heading, $value in $h-tags {
+  #{$heading} {
+    font-size: map-get($value, size);
+    font-weight: map-get($value, weight);
+    @if map-has-key($value, line-height) {
+      line-height: map-get($value, line-height);
+    }
+    @if map-has-key($value, letter-spacing) {
+      letter-spacing: map-get($value, letter-spacing);
+    }
+    @media screen and (max-width: $breakpoint-sm) {
+      $size: map-get($value, size);
+      font-size: $size * .6;
+    }
+  }
+}
 
-// for $heading, $value in $headings
-//   .q-{$heading}-opacity
-//     opacity: $value.opacity
-//   .q-{$heading}
-//     font-size: $value.size
-//     font-weight: $value.weight
-//     if $value.line-height
-//       line-height: $value.line-height
-//     if $value.letter-spacing
-//       letter-spacing: $value.letter-spacing
+@each $heading, $value in $headings {
+  .#{$heading}-opacity {
+    opacity: map-get($value, opacity);
+  }
+  .#{$heading} {
+    font-size: map-get($value, size);
+    font-weight: map-get($value, weight);
+    @if map-has-key($value, line-height) {
+      line-height: map-get($value, line-height);
+    }
+    @if map-has-key($value, letter-spacing) {
+      letter-spacing: map-get($value, letter-spacing);
+    }
+  }
+}
 
 p {
   $cordinates: map-get($spaces, md);

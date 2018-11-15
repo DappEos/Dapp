@@ -16,7 +16,8 @@ import {
   Tabs,
   TabPane,
   Dialog,
-  Alert
+  Alert,
+  Input
 } from 'element-ui'
 
 export default (Vue: VueConstructor) => {
@@ -37,4 +38,5 @@ export default (Vue: VueConstructor) => {
   Vue.use(TabPane)
   Vue.use(Dialog)
   Vue.use(Alert)
+  Vue.use(Input)
 }

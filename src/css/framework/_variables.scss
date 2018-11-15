@@ -5,6 +5,7 @@ $generic-border-radius: 2px !default;
 $generic-hover-transition: .3s cubic-bezier(.25, .8, .5, 1) !default;
 $body-background: white !default;
 $body-color: #0c0c0c !default;
+$min-line-height : 1.12 !default;
 
 $typography-font-family: 'Roboto', '-apple-system', 'Helvetica Neue', Helvetica, Arial, sans-serif !default;
 
@@ -30,6 +31,15 @@ $sizes : (
   xl: $breakpoint-lg + 1,
 ) !default;
 
+$flex-gutter: (
+  none: 0,
+  xs: $flex-gutter-xs,
+  sm: $flex-gutter-sm,
+  md: $flex-gutter-md,
+  lg: $flex-gutter-lg,
+  xl: $flex-gutter-xl
+);
+
 $text-weights : (
   thin: 100,
   light: 300,
@@ -38,6 +48,82 @@ $text-weights : (
   bold: 700,
   bolder: 900
 ) !default;
+
+// $headings: (a: (k: 90));
+$headings : (
+  display-4: (
+    size: 112px,
+    weight: 300,
+    opacity: .54,
+    line-height: $min-line-height,
+    letter-spacing: -.04em
+  ),
+  display-3: (
+    size: 56px,
+    weight: 400,
+    opacity: .54,
+    line-height: 1.35,
+    letter-spacing: -.02em
+  ),
+  display-2: (
+    size: 45px,
+    weight: 400,
+    opacity: .54,
+    line-height: 48px,
+    letter-spacing: normal
+  ),
+  display-1: (
+    size: 34px,
+    weight: 400,
+    opacity: .54,
+    line-height: 40px,
+    letter-spacing: normal
+  ),
+  headline: (
+    size: 24px,
+    weight: 400,
+    opacity: .87,
+    line-height: 32px,
+    letter-spacing: normal
+  ),
+  title: (
+    size: 20px,
+    weight: 500,
+    opacity: .87,
+    line-height: $min-line-height,
+    letter-spacing: .02em
+  ),
+  subheading: (
+    size: 16px,
+    weight: 400,
+    opacity: .87
+  ),
+  body-2: (
+    size: 14px,
+    weight: 500,
+    opacity: .87
+  ),
+  body-1: (
+    size: 14px,
+    weight: 400,
+    opacity: .87
+  ),
+  caption: (
+    size: 12px,
+    weight: 400,
+    opacity: .54
+  )
+);
+
+$h-tags: (
+  h1: map-get($headings, display-4),
+  h2: map-get($headings, display-3),
+  h3: map-get($headings, display-2),
+  h4: map-get($headings, display-1),
+  h5: map-get($headings, headline),
+  h6: map-get($headings, title)
+);
+
 
 $spaces: (
   xs: (x: $space-x-base * .25, y: $space-y-base * .25),

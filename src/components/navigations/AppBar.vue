@@ -22,19 +22,14 @@
         <el-col>
           <el-button type="primary" size="small">Lucky Draw</el-button>
         </el-col>
-        <el-col>
-          <el-button class="text-white" type="text" size="small">
-              English <i class="el-icon-arrow-down el-icon-right"></i>
-          </el-button>
-        </el-col>
       </el-row>
     </el-col>
     <el-col>
-      <el-row type="flex" justify="end">
-        <el-col :span="4">
+      <el-row type="flex" align="middle" justify="end">
+        <el-col :span="3">
           <el-button class="text-white" type="text" size="small">Invite</el-button>
         </el-col>
-        <el-col :span="6">
+        <el-col :span="5">
           <el-button
             class="text-white"
             type="text"
@@ -42,8 +37,11 @@
             @click="showHelp = true"
           >How to play?</el-button>
         </el-col>
-        <el-col :span="4">
+        <el-col :span="6">
           <el-button class="text-white" type="text" size="small">DICE</el-button>
+          <el-button class="text-white" type="text" size="small">
+              English <i class="el-icon-arrow-down el-icon-right"></i>
+          </el-button>
         </el-col>
         <el-col :span="4">
           <el-button  v-if="!currentUser" type="primary" size="small" @click="login">
@@ -52,7 +50,7 @@
             </span>
             <span class="text-weight-bold ml-sm mr-sm inline-block vertical-middle">Login</span>
           </el-button>
-          <el-button v-else type="danger" size="small" @click="logout">
+          <el-button v-else type="primary" size="small" @click="logout">
             <span class="text-weight-bold vertical-middle">Log out</span>
           </el-button>
         </el-col>

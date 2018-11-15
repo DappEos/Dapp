@@ -18,3 +18,17 @@ body {
   border-left: solid $secondary;
   border-right: solid $secondary;
 }
+
+.amount-text {
+  @extend .text-weight-bold;
+  font-size: 1.3rem;
+}
+
+.amount-input {
+  > .el-input__inner {
+    @extend .text-center,.amount-text;
+    border: 0;
+    color: white;
+    background: $blue-grey-5;
+  }
+}
