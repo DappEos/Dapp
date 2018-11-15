@@ -139,7 +139,7 @@
             <div class="columns">
               <div class="column">
                 <span class="inline-blocks" style="font-size: 2rem; font-weight: bold">
-                  {{ below ? currentThreshold : 96 - currentThreshold }}%
+                  {{ below ? currentThreshold : 99 - currentThreshold }}%
                 </span>
               </div>
             </div>
