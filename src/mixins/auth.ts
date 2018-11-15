@@ -1,4 +1,4 @@
-import auth from '@/layer/auth'
+import auth, { NETWORK } from '@/layer/auth'
 import {ComponentOptions} from 'vue';
 import { SET_USER } from '@/store/mutation-types';
 
@@ -14,8 +14,17 @@ export default {
         auth.getIdentity()
           .then((user: any) => {
             this.$store.commit(SET_USER, user)
+            return user
           })
-          .catch(console.error)
+          .then((user: any) => {
+            auth.getArbitrarySignature(user.publicKey, {})
+              .then(console.log)
+              .catch(console.error)
+          })
+          .catch((e) => {
+            console.error(e)
+          })
+
       }
 
       if (auth.hasIdentity) {
