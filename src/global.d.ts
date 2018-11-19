@@ -8,3 +8,7 @@ declare module 'scatterjs-plugin-eosjs' {
   export default ex
 }
 
+declare module 'eosjs' {
+  const ex: any
+  export default ex
+}

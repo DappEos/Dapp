@@ -20,7 +20,7 @@
       <el-col :span="6" class="text-light">
         <el-row type="flex" align="middle">
           <el-col :span="3">
-            <img class="vertical-middle" style="width: 2rem; height: 2rem" src="/img/poker-chip-icon.svg" />
+            <eos-logo class="ml-sm" :width="17" :height="25" fill="white" />
           </el-col>
           <el-col>
             <span class="inline-block">PAYOUT ON WIN</span>
@@ -34,14 +34,14 @@
           <el-col class="pa-sm round-borders bg-blue-grey-6">
             <el-row class="px-xs text-white" type="flex" align="bottom">
               <el-col class="text-left" :span="5">
-                <img
-                  src="/img/poker-chips-stack.svg"
-                  class="vertical-bottom"
-                  style="width: 2rem; height: 2rem;"
-                />
+                <eos-logo :width="17" :height="25" fill="white" />
               </el-col>
               <el-col class="text-center" :span="14">
-                <el-input class="amount-input" v-model="betAmount" />
+                <el-input
+                  class="amount-input"
+                  v-model="betAmount"
+                  :disabled="rolling"
+                />
               </el-col>
               <el-col class="text-right text-light" :span="5">
                 <span class="inline-block">EOS</span>
@@ -59,6 +59,7 @@
                   class="bg-primary text-white"
                   size="small"
                   @click="multiplyBet(0.5)"
+                  :disabled="rolling"
                 >1/2</el-button>
               </el-col>
               <el-col class="pl-sm pr-sm border-lr-secondary">
@@ -66,10 +67,16 @@
                   class="bg-primary text-white"
                   size="small"
                   @click="multiplyBet(2)"
+                  :disabled="rolling"
                 >2X</el-button>
               </el-col>
               <el-col class="pl-sm">
-                <el-button class="bg-primary text-white" size="small">MAX</el-button>
+                <el-button
+                  class="bg-primary text-white"
+                  size="small"
+                  @click="setMaxAmount()"
+                  :disabled="rolling"
+                >MAX</el-button>
               </el-col>
             </el-row>
           </el-col>
@@ -78,10 +85,7 @@
       <el-col class="bg-primary round-borders pa-sm ml-sm" :span="6">
         <el-row class="pa-sm text-white" type="flex" align="bottom">
           <el-col class="text-left" :span="5">
-            <img
-              src="/img/poker-chips-stack.svg"
-              style="vertical-align: bottom; width: 2rem; height: 2rem;"
-            />
+            <eos-logo :width="17" :height="25" fill="white" />
           </el-col>
           <el-col>
             <span class="inline-block amount-text">{{ payoutOnWin }}</span>
@@ -149,27 +153,38 @@
     </el-row>
     <div class="mt-md row justify-center">
       <div class="col-auto">
-        <el-button @click="below = false" class="bg-primary text-white" size="small">
+        <el-button
+          :class="getClass(!below)"
+          @click="below = false"
+          class="text-white"
+          size="small"
+          :disabled="rolling"
+        >
           <img
             src="/img/md-arrow-round-up.svg"
             class="vertical-middle"
             style="width: 1rem"
-          /> UP
+          /> {{ $t('boundary.up') }}
         </el-button>
-        <el-button @click="below = true" class="bg-primary text-white" size="small">
+        <el-button
+          :class="getClass(below)"
+          @click="below = true"
+          class="text-white"
+          size="small"
+          :disabled="rolling"
+        >
           <img
             src="/img/md-arrow-round-down.svg"
             class="vertical-middle"
             style="width: 1rem"
-          /> DOWN
+          /> {{ $t('boundary.down') }}
         </el-button>
-        <!-- <el-button icon="el-icon-sort-down" size="small">DOWN</el-button> -->
       </div>
     </div>
     <el-row class="ma-lg px-md" type="flex" justify="center">
       <el-col :span="15" style="border-radius: 45px;" class="pa-md text-center bg-primary">
         <div class="block">
-          <threshold-picker />
+          <threshold-picker :disabled="rolling" />
         </div>
       </el-col>
     </el-row>
@@ -218,7 +233,9 @@
 <script lang="ts">
 import AuthMixin from '@/mixins/auth'
 import { SHOW_HELP } from '@/constants'
+import { Notification } from 'element-ui'
 import Tracks from '@/components/Tracks.vue'
+import EosLogo from '@/components/icons/eos-logo.vue'
 import BaseLayout from '@/components/layouts/Base.vue'
 import { Component, Vue, Watch } from 'vue-property-decorator'
 import ThresholdPicker from '@/components/ThresholdPicker.vue'
@@ -227,6 +244,7 @@ import ThresholdPicker from '@/components/ThresholdPicker.vue'
   mixins: [AuthMixin],
   components: {
     Tracks,
+    EosLogo,
     BaseLayout,
     ThresholdPicker
   }
@@ -254,28 +272,71 @@ export default class Home extends Vue {
       : Math.floor(98 / (99 - this.currentThreshold) * this.betAmount * 10000) / 10000
   }
 
+  get balance() {
+    return this.$store.state.balance as number
+  }
+
   public showHelp() {
     this.$root.$emit(SHOW_HELP)
   }
 
-  private roll() {
-    this.rolling = true
-    setTimeout(() => {this.rolling = false}, 2000)
+  private getClass(v: boolean) {
+    return v ? 'bg-info' : 'bg-primary'
+  }
+
+  private async roll() {
+    try {
+      this.rolling = true
+      const range = this.below ? this.currentThreshold + 100 : this.currentThreshold
+      const memo = `Bet ${range}`;
+      const $this = this as any
+      const result = await $this.createTransfer(this.payoutOnWin, memo)
+      const data = await $this.getTableRows()
+      const rolled: number = data.random_roll
+      if (rolled < 100) {
+        this.rolling = false
+        if ((this.below && rolled < this.currentThreshold) ||
+          (!this.below && rolled > this.currentThreshold)) {
+          this.notify(rolled, true)
+        } else {
+          this.notify(rolled, false)
+        }
+        $this.getBalance()
+      }
+    } catch (e) {
+      Notification.error({
+        title: this.$t('titles.error.transfer') as string,
+        message: this.$t('message.transfer_error') as string
+      })
+      this.rolling = false
+    }
+  }
+
+  private notify(roll: number, won: boolean) {
+    if (won) {
+      const payout = this.betAmount * this.payout
+      Notification.success({
+        title: this.$t('Congratulation!') as string,
+        message: this.$t('message.won', [roll, payout]) as string,
+      })
+    } else {
+      Notification.error({
+        title: this.$t('You Lost') as string,
+        message: this.$t('message.lost', [roll]) as string
+      })
+    }
   }
 
   private multiplyBet(by: number) {
     this.betAmount *= by;
-    // if(this.betAmount > this.store.eos.balance) {
-    //   this.betAmount = this.store.eos.balance;
-    // }
+    if (process.env.NODE_ENV !== 'development' &&
+      this.betAmount > this.balance) {
+      this.betAmount = this.balance;
+    }
   }
 
-  @Watch('betAmount')
-  private watchBetAmount(newVal: string) {
-    this.betAmount = Math.floor(this.betAmount * 10000) / 10000;
-    this.$nextTick(() => {
-      this.$forceUpdate()
-    })
+  private setMaxAmount() {
+    this.betAmount = this.balance
   }
 }
 </script>

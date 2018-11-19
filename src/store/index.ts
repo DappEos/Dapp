@@ -17,6 +17,7 @@ const Store = new Vuex.Store({
   ],
   state: {
     user: null,
+    balance: 0,
     threshold: 0
   }
 })

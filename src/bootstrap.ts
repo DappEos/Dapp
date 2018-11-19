@@ -20,7 +20,10 @@ import {
   Input
 } from 'element-ui'
 
+import VueI18n from 'vue-i18n'
+
 export default (Vue: VueConstructor) => {
+  Vue.use(VueI18n)
   Vue.use(Header)
   Vue.use(Container)
   Vue.use(Main)
