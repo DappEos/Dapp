@@ -1,0 +1,9 @@
+<template>
+  <svg xmlns="http://www.w3.org/2000/svg" class="eos-logo"><g><path d="M8.466.851l-5.09 6.317L.606 19.99l7.86 4.391 7.93-4.392-2.771-12.82L8.466.852zm-5.58 6.072L8.463 0l5.651 6.923L17 20.272 8.463 25 0 20.272 2.886 6.923z"></path><path d="M8.5 23.752L13.488 6.2c.042-.15.189-.233.327-.187.138.046.216.204.173.354L8.75 24.8a.257.257 0 0 1-.5 0L3.012 6.367c-.043-.15.035-.308.173-.354.138-.046.285.038.327.187L8.5 23.752z"></path></g></svg>
+</template>
+
+<script lang="ts">
+import { Vue } from 'vue-property-decorator'
+
+export default class EOSLogo extends Vue {}
+</script>

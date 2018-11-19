@@ -1,8 +1,20 @@
-import ScatterJs from 'scatterjs-core'
+import store from '@/store'
+import Eos from 'eosjs'
+import Scatter from 'scatterjs-core'
 import ScatterEOS from 'scatterjs-plugin-eosjs'
+import { SET_USER } from '@/store/mutation-types';
+
+const {Blockchains} = Scatter
+// tslint:disable-next-line:variable-name
+let _eos: any = null
+// tslint:disable-next-line:variable-name
+let _account = {
+  name: null,
+  authority: null
+}
 
 export const NETWORK = {
-  blockchain: 'eos',
+  blockchain: Blockchains.EOS,
   protocol: 'https',
   host: 'nodes.get-scatter.com',
   port: 443,
@@ -10,25 +22,26 @@ export const NETWORK = {
 }
 
 export class Auth {
-
-  private scatterRef: any
-
   private eosPluginRef: any
 
-  get scatter() {
-    return ScatterJs
+  get account() {
+    return _account
+  }
+
+  get eos() {
+    return _eos
   }
 
   get hasIdentity() {
-    return this.scatterRef.scatter.identity
+    return Scatter.scatter.identity
   }
 
   public async bootstrap() {
-    ScatterJs.plugins(this.getEosPlugin())
-    const connected = await ScatterJs.scatter.connect(ScatterJs.Blockchains.EOS)
+    Scatter.plugins(this.getEosPlugin())
+    const connected = await Scatter.scatter.connect(Scatter.Blockchains.EOS)
     if (!connected) {return}
-    this.scatterRef = ScatterJs;
-    (window as any).ScatterJS = (window as any).ScatterEOS = undefined
+    const win = window as any
+    win.ScatterJS = win.ScatterEOS = win.scatter = undefined
   }
 
   public getEosPlugin() {
@@ -41,21 +54,43 @@ export class Auth {
   }
 
   public async getIdentity() {
-    return this.scatterRef.scatter.getIdentity({
+    return Scatter.scatter.getIdentity({
       personal: ['firstname', 'lastname'],
       location: ['country'],
-      // accounts: [network]
+      accounts: [NETWORK]
     })
+      .then((user: any) => {
+        store.commit(SET_USER, user)
+        const {scatter} = Scatter
+        const eos = scatter.eos(NETWORK, Eos, {expiresInSeconds: 60})
+        _eos = eos
+        _account = (user.accounts as any[])
+          .find((v: {blockchain: string}) => v.blockchain === Blockchains.EOS)
+      })
   }
 
   public async forgetIdentity(): Promise<void> {
-    return ScatterJs.scatter.forgetIdentity()
+    return Scatter.scatter.forgetIdentity()
   }
 
-  public async getArbitrarySignature(
-    publicKey: string, data: any, whatfor: string = '', isHash = false
-  ) {
-    return ScatterJs.scatter.getArbitrarySignature(...arguments)
+  public async transfer(amount: number, memo: string) {
+    const transactionOpts = {
+      authorization: [`${_account.name}@${_account.authority}`]
+    }
+    return _eos.transfer(_account.name, 'tamtamtamtam', `${amount} EOS`, memo, transactionOpts)
+  }
+
+  public async getBalance() {
+    return this.eos.getCurrencyBalance('eosio.token', this.account.name)
+      .then((result: any) => {
+        return !result[0] ? 0 : parseFloat(result[0].split(' ', 1)[0]).toFixed(4)
+      })
+  }
+
+  public async getTableRows() {
+    return this.eos.getTableRows(
+      true, 'tamtamtamtam', this.account.authority, 'result', '0'
+    )
   }
 }
 

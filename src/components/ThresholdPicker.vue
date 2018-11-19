@@ -6,6 +6,7 @@
     :height="20"
     :dot-size="25"
     piecewise-label
+    :disabled="disabled"
     @input="setThreshold"
     :value="sliderValue"
     :label-style="{color: 'white'}"
@@ -13,7 +14,7 @@
     :labelActiveStyle="{color: 'var(--color-info)'}"
     :process-style="{background: '#03f53c'}"
   >
-    <template slot="label" scope="{label, active}">
+    <template slot="label" slot-scope="{label, active}">
       <span
         v-if="label == 1 || label % 25 === 0"
         class="vue-slider-piecewise-label text-white"
@@ -27,7 +28,7 @@
 
 <script lang="ts">
 import VueSlider from 'vue-slider-component'
-import {Vue, Component} from 'vue-property-decorator'
+import {Vue, Component, Prop} from 'vue-property-decorator'
 import { SET_THRESHOLD } from '@/store/mutation-types';
 
 @Component({
@@ -35,6 +36,8 @@ import { SET_THRESHOLD } from '@/store/mutation-types';
 })
 export default class ThresholdPicker extends Vue {
   protected sliderValue: number = 50
+
+  @Prop() protected disabled: boolean = false
 
   get threshold() {
     return this.$store.state.threshold
