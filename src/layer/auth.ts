@@ -13,13 +13,22 @@ let _account = {
   authority: null
 }
 
+// testnet
 export const NETWORK = {
   blockchain: Blockchains.EOS,
-  protocol: 'https',
-  host: 'nodes.get-scatter.com',
-  port: 443,
-  chainId: 'aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906'
+  protocol: 'http',
+  host: 'jungle.cryptolions.io',
+  port: 18888,
+  chainId: '038f4b0fc8ff18a4f0842a8f0564611f6e96e8535901dd45e43ac8691a1c4dca'
 }
+
+// export const NETWORK = {
+//   blockchain: Blockchains.EOS,
+//   protocol: 'https',
+//   host: 'nodes.get-scatter.com',
+//   port: 443,
+//   chainId: 'aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906'
+// }
 
 export class Auth {
   private eosPluginRef: any
@@ -55,8 +64,8 @@ export class Auth {
 
   public async getIdentity() {
     return Scatter.scatter.getIdentity({
-      personal: ['firstname', 'lastname'],
-      location: ['country'],
+      //personal: ['firstname', 'lastname'],
+      //location: ['country'],
       accounts: [NETWORK]
     })
       .then((user: any) => {
@@ -77,7 +86,9 @@ export class Auth {
     const transactionOpts = {
       authorization: [`${_account.name}@${_account.authority}`]
     }
-    return _eos.transfer(_account.name, 'tamtamtamtam', `${amount} EOS`, memo, transactionOpts)
+    return _eos.transfer(_account.name, 'tamtamtamtam', `${Number(amount)
+      .toFixed(4)
+      .toString()} EOS`, memo, transactionOpts)
   }
 
   public async getBalance() {
