@@ -288,7 +288,7 @@ export default class Home extends Vue {
     try {
       this.rolling = true
       const range = this.below ? this.currentThreshold + 100 : this.currentThreshold
-      const memo = `Bet ${range}`;
+      const memo = `${range}`;
       const $this = this as any
       const result = await $this.createTransfer(this.payoutOnWin, memo)
       const data = await $this.getTableRows()
