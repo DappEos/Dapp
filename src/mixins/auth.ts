@@ -1,6 +1,6 @@
 import store from '@/store'
-import auth from '@/layer/auth'
 import {ComponentOptions} from 'vue';
+import auth, {NETWORKS} from '@/layer/auth'
 import { SET_USER, SET_BALANCE } from '@/store/mutation-types';
 import bets from '@/layer/bets';
 
@@ -16,10 +16,10 @@ export default {
     }
   },
   methods: {
-    login() {
+    login(provider: string) {
       const callback = async () => {
         try {
-          await auth.getIdentity()
+          await auth.getIdentity(NETWORKS[provider])
           const balance = await auth.getBalance()
           store.commit(SET_BALANCE, balance)
         } catch (e) {

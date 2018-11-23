@@ -1,7 +1,7 @@
 <template>
   <base-layout class="bg-secondary window-height">
-    <el-row type="flex" justify="center">
-      <el-col :span="3">
+    <el-row class="text-center">
+      <el-col>
         <el-button type="warning">EOS</el-button>
         <el-button type="primary">DICE</el-button>
       </el-col>

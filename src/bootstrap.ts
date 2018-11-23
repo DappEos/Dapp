@@ -17,7 +17,9 @@ import {
   TabPane,
   Dialog,
   Alert,
-  Input
+  Input,
+  Popover,
+  Radio
 } from 'element-ui'
 
 import VueI18n from 'vue-i18n'
@@ -42,4 +44,6 @@ export default (Vue: VueConstructor) => {
   Vue.use(Dialog)
   Vue.use(Alert)
   Vue.use(Input)
+  Vue.use(Popover)
+  Vue.use(Radio)
 }
