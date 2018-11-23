@@ -290,7 +290,7 @@ export default class Home extends Vue {
       const range = this.below ? this.currentThreshold + 100 : this.currentThreshold
       const memo = `${range}`;
       const $this = this as any
-      const result = await $this.createTransfer(this.payoutOnWin, memo)
+      const result = await $this.createTransfer(this.betAmount, memo)
       const data = await $this.getTableRows()
       const rolled: number = data.random_roll
       if (rolled < 100) {

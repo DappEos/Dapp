@@ -16,10 +16,11 @@ export default {
     }
   },
   methods: {
-    login(provider: string) {
+    login(provider: string = localStorage.getItem('provider') as string) {
       const callback = async () => {
         try {
           await auth.getIdentity(NETWORKS[provider])
+          localStorage.setItem('provider', provider)
           const balance = await auth.getBalance()
           store.commit(SET_BALANCE, balance)
         } catch (e) {
