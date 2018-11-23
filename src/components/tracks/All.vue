@@ -3,9 +3,9 @@
     <app-table :data="data" :headers="headers">
       <div slot="col-payout" slot-scope="{row}">
         <div
-          :class="`text-${row.random_roll > row.percentage ? 'negative' : 'positive'}`"
+          :class="`text-${isLost(row) ? 'negative' : 'positive'}`"
         >
-          {{ row.payout }}
+          {{ isLost(row) ? '' : row.payout }}
         </div>
       </div>
     </app-table>
@@ -38,6 +38,10 @@ export default class All extends Vue {
     } catch (e) {
 
     }
+  }
+
+  isLost(row: {random_roll: number, percentage: number}) {
+    return row.random_roll > row.percentage
   }
 
   mounted() {

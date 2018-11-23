@@ -1,7 +1,7 @@
 <template>
   <base-layout class="bg-secondary window-height">
-    <el-row type="flex" justify="center">
-      <el-col :span="3">
+    <el-row class="text-center">
+      <el-col>
         <el-button type="warning">EOS</el-button>
         <el-button type="primary">DICE</el-button>
       </el-col>
@@ -290,7 +290,7 @@ export default class Home extends Vue {
       const range = this.below ? this.currentThreshold + 100 : this.currentThreshold
       const memo = `${range}`;
       const $this = this as any
-      const result = await $this.createTransfer(this.payoutOnWin, memo)
+      const result = await $this.createTransfer(this.betAmount, memo)
       const data = await $this.getTableRows()
       const rolled: number = data.random_roll
       if (rolled < 100) {

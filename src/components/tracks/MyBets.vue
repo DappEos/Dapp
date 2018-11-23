@@ -2,10 +2,8 @@
   <div>
     <app-table v-if="currentUser" :data="data" :headers="headers">
       <div slot="col-won" slot-scope="{row}">
-        <div
-          :class="`text-${row.roll > row.per ? 'negative' : 'positive'}`"
-        >
-          {{ row.won }}
+        <div v-if="row.won > 0" class="text-positive">
+          {{ row.won.toFixed(4) }} EOS
         </div>
       </div>
     </app-table>

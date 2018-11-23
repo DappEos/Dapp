@@ -44,12 +44,25 @@
           </el-button>
         </el-col>
         <el-col :span="4">
-          <el-button  v-if="!currentUser" type="primary" size="small" @click="login">
-            <span class="inline-block vertical-middle">
-              <img src="/img/ios-person.svg" style="width: 1rem" />
-            </span>
-            <span class="text-weight-bold ml-sm mr-sm inline-block vertical-middle">Login</span>
-          </el-button>
+          <el-popover
+            ref="popover"
+            v-if="!currentUser"
+            popper-class="bg-primary no-border"
+            placement="bottom"
+            trigger="click"
+            v-model="showProviders"
+            :visible-arrow="false"
+            @hide="$nextTick(() => $refs.providers.clear())"
+          >
+            <providers ref="providers" @input="signIn" />
+
+            <el-button slot="reference" type="primary" size="small">
+              <span class="inline-block vertical-middle">
+                <img src="/img/ios-person.svg" style="width: 1rem" />
+              </span>
+              <span class="text-weight-bold ml-sm mr-sm inline-block vertical-middle">Login</span>
+            </el-button>
+          </el-popover>
           <el-button v-else type="primary" size="small" @click="logout">
             <span class="text-weight-bold vertical-middle">Log out</span>
           </el-button>
@@ -61,20 +74,63 @@
 </template>
 
 <script lang="ts">
+import {CreateElement} from 'vue'
 import { SHOW_HELP } from '@/constants'
 import HelpModal from '@/components/Help.vue'
 import {Vue, Component} from 'vue-property-decorator'
 import AuthMixin from '@/mixins/auth'
 
 @Component({
-  components: {HelpModal},
+  components: {
+    HelpModal,
+    Providers: {
+      data: () => ({value: null}),
+      methods: {
+        clear() {
+          (this as any).value = null
+        }
+      },
+      render(h: CreateElement) {
+        const $this = this as any
+        const input = (value: any) => {
+          $this.value = value
+          this.$emit('input', value)
+        }
+
+        return h('div', [
+          h('el-radio', {
+            class: 'text-white',
+            on: {input},
+            props: {
+              label: 'EOS',
+              value: $this.value,
+            }
+          }),
+          h('el-radio', {
+            class: 'text-white',
+            on: {input},
+            props: {
+              label: 'JUNGLE',
+              value: $this.value
+            }
+          }),
+        ])
+      }
+    }
+  },
   mixins: [AuthMixin]
 })
 export default class AppBar extends Vue {
   protected showHelp = false
+  protected showProviders = false
 
   private mounted() {
     this.$root.$on(SHOW_HELP, () => this.showHelp = true)
+  }
+
+  private signIn(provider: string) {
+    this.showProviders = false;
+    (this as any).login(provider)
   }
 }
 </script>

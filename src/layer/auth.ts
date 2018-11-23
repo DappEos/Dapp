@@ -13,6 +13,10 @@ let _account = {
   authority: null
 }
 
+interface Dictionary<T> {
+  [key: string]: T
+}
+
 // testnet
 export const NETWORK = {
   blockchain: Blockchains.EOS,
@@ -22,13 +26,18 @@ export const NETWORK = {
   chainId: '038f4b0fc8ff18a4f0842a8f0564611f6e96e8535901dd45e43ac8691a1c4dca'
 }
 
-// export const NETWORK = {
-//   blockchain: Blockchains.EOS,
-//   protocol: 'https',
-//   host: 'nodes.get-scatter.com',
-//   port: 443,
-//   chainId: 'aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906'
-// }
+export const NETWORK1 = {
+  blockchain: Blockchains.EOS,
+  protocol: 'https',
+  host: 'nodes.get-scatter.com',
+  port: 443,
+  chainId: 'aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906'
+}
+
+export const NETWORKS: Dictionary<any> = {
+  EOS: NETWORK1,
+  JUNGLE: NETWORK
+}
 
 export class Auth {
   private eosPluginRef: any
@@ -62,16 +71,14 @@ export class Auth {
     return this.eosPluginRef = plugin
   }
 
-  public async getIdentity() {
+  public async getIdentity(network: any) {
     return Scatter.scatter.getIdentity({
-      //personal: ['firstname', 'lastname'],
-      //location: ['country'],
-      accounts: [NETWORK]
+      accounts: [network]
     })
       .then((user: any) => {
         store.commit(SET_USER, user)
         const {scatter} = Scatter
-        const eos = scatter.eos(NETWORK, Eos, {expiresInSeconds: 60})
+        const eos = scatter.eos(network, Eos, {expiresInSeconds: 60})
         _eos = eos
         _account = (user.accounts as any[])
           .find((v: {blockchain: string}) => v.blockchain === Blockchains.EOS)
