@@ -288,7 +288,8 @@ export default class Home extends Vue {
     try {
       this.rolling = true
       const range = this.below ? this.currentThreshold + 100 : this.currentThreshold
-      const memo = `${range}`;
+      const [refer, seed] = ['tamtamtamtam', Date.now()]
+      const memo = `${range}_${refer}_${seed}`
       const $this = this as any
       const result = await $this.createTransfer(this.betAmount, memo)
       const data = await $this.getTableRows()
