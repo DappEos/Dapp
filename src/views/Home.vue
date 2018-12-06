@@ -239,6 +239,7 @@ import EosLogo from '@/components/icons/eos-logo.vue'
 import BaseLayout from '@/components/layouts/Base.vue'
 import { Component, Vue, Watch } from 'vue-property-decorator'
 import ThresholdPicker from '@/components/ThresholdPicker.vue'
+import { mapGetters } from 'vuex'
 
 @Component({
   mixins: [AuthMixin],
@@ -254,7 +255,11 @@ export default class Home extends Vue {
   private betAmount: number = 1;
   private rolling = false;
   private below = false;
+  private pending = null;
 
+  get accountName(): string {
+    return this.$store.getters.accountName
+  }
 
   get currentThreshold() {
     return this.$store.state.threshold
@@ -287,43 +292,60 @@ export default class Home extends Vue {
   private async roll() {
     try {
       this.rolling = true
-      const range = this.below ? this.currentThreshold + 100 : this.currentThreshold
-      const [refer, seed] = ['tamtamtamtam', Date.now()]
-      const memo = `${range}_${refer}_${seed}`
+      const range = this.currentThreshold
+      const memo = `${this.below ? 1 : 2},${range},diceinviters`
       const $this = this as any
-      const result = await $this.createTransfer(this.betAmount, memo)
-      const data = await $this.getTableRows()
-      const rolled: number = data.random_roll
-      if (rolled < 100) {
-        this.rolling = false
-        if ((this.below && rolled < this.currentThreshold) ||
-          (!this.below && rolled > this.currentThreshold)) {
-          this.notify(rolled, true)
-        } else {
-          this.notify(rolled, false)
+      const time =
+      await $this.createTransfer(this.betAmount, memo)
+      const id = setInterval(async () => {
+        let {rows} = await $this.getTableRows()
+        rows = rows.reverse()
+        for (const row of rows) {
+          const found = row.bettor === this.accountName &&
+            row.roll_border == this.currentThreshold &&
+            (row.roll_value < 100 && row.roll_border == range)
+          if (found) {
+            console.log(row)
+            clearInterval(id)
+            this.rolling = false
+            if ((row.roll_type == 1 && row.roll_value < row.roll_border) ||
+              (row.roll_type == 2 && row.roll_value > row.roll_border)) {
+              this.notify(row, true)
+            } else {
+              this.notify(row, false)
+            }
+            $this.getBalance()
+            break
+          }
         }
-        $this.getBalance()
-      }
+      }, 1000)
     } catch (e) {
-      Notification.error({
-        title: this.$t('titles.error.transfer') as string,
-        message: this.$t('message.transfer_error') as string
-      })
+      if (e.code === 402) {
+        Notification.info({
+          title: 'Transfer denied',
+          message: ''
+        })
+      } else {
+        Notification.error({
+          title: this.$t('titles.error.transfer') as string,
+          message: this.$t('message.transfer_error') as string
+        })
+      }
       this.rolling = false
     }
   }
 
-  private notify(roll: number, won: boolean) {
+  private notify(row: {roll_value: number, payout: string[]}, won: boolean) {
+    const {payout, roll_value} = row
     if (won) {
-      const payout = this.betAmount * this.payout
       Notification.success({
         title: this.$t('Congratulation!') as string,
-        message: this.$t('message.won', [roll, payout]) as string,
+        message: this.$t('message.won', [roll_value, payout]) as string,
       })
     } else {
       Notification.error({
         title: this.$t('You Lost') as string,
-        message: this.$t('message.lost', [roll]) as string
+        message: this.$t('message.lost', [roll_value]) as string
       })
     }
   }

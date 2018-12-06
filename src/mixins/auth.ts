@@ -2,7 +2,8 @@ import store from '@/store'
 import {ComponentOptions} from 'vue';
 import auth, {NETWORKS} from '@/layer/auth'
 import { SET_USER, SET_BALANCE } from '@/store/mutation-types';
-import bets from '@/layer/bets';
+const lastId = localStorage.getItem('lastId') || 1;
+let _lastId = Number(lastId)
 
 export default {
   computed: {
@@ -21,8 +22,7 @@ export default {
         try {
           await auth.getIdentity(NETWORKS[provider])
           localStorage.setItem('provider', provider)
-          const balance = await auth.getBalance()
-          store.commit(SET_BALANCE, balance)
+          await this.getBalance()
         } catch (e) {
           console.error(e)
         }
@@ -46,18 +46,20 @@ export default {
     getBalance() {
       return auth.getBalance()
         .then((v: number) => {
-          store.commit(SET_BALANCE, v)
-          return v
+          store.commit(SET_BALANCE, Number(v))
+          return Number(v)
         })
     },
     createTransfer(amount: number, memo: string) {
       return auth.transfer(amount, memo)
     },
     getTableRows() {
-      return bets.getLast30()
-        .then((response: any) => {
-          const {data} = response
-          return data[0]
+      return auth.getTableRows(_lastId, {limit: 100})
+        .then((data: {rows: any[], more: boolean}) => {
+          const { rows } = data
+          const last = rows[rows.length - 1]
+          localStorage.setItem('lastId', _lastId = last.id)
+          return data
         })
     }
   }

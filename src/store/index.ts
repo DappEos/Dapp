@@ -19,6 +19,11 @@ const Store = new Vuex.Store({
     user: null,
     balance: 0,
     threshold: 0
+  },
+  getters: {
+    accountName({user}) {
+      return user == null ? null : user.accounts[0].name
+    }
   }
 })
 

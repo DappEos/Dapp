@@ -21,9 +21,9 @@ interface Dictionary<T> {
 export const NETWORK = {
   blockchain: Blockchains.EOS,
   protocol: 'http',
-  host: 'jungle.cryptolions.io',
-  port: 18888,
-  chainId: '038f4b0fc8ff18a4f0842a8f0564611f6e96e8535901dd45e43ac8691a1c4dca'
+  host: 'jungle2.cryptolions.io',
+  port: 80,
+  chainId: 'e70aaab8997e1dfce58fbfac80cbbb8fecec7b99cf982a9444273cbc64c41473'
 }
 
 export const NETWORK1 = {
@@ -93,7 +93,7 @@ export class Auth {
     const transactionOpts = {
       authorization: [`${_account.name}@${_account.authority}`]
     }
-    return _eos.transfer(_account.name, 'tamtamtamtam', `${Number(amount)
+    return _eos.transfer(_account.name, 'dicedicedice', `${Number(amount)
       .toFixed(4)
       .toString()} EOS`, memo, transactionOpts)
   }
@@ -105,10 +105,15 @@ export class Auth {
       })
   }
 
-  public async getTableRows() {
-    return this.eos.getTableRows(
-      true, 'tamtamtamtam', this.account.authority, 'result', '0'
-    )
+  public async getTableRows(start = 1, opts = {}) {
+    return this.eos.getTableRows({
+      json: true,
+      code: 'dicedicedice',
+      scope: 'dicedicedice',
+      table: 'activebets',
+      lower_bound: (opts as any).limit ? 1 : start,
+      ...opts
+    })
   }
 }
 
