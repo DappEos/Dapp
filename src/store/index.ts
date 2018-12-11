@@ -7,8 +7,15 @@ import bets from './module/bets'
 
 Vue.use(Vuex)
 
+export interface GlobalState {
+  user: any;
+  balance: number;
+  threshold: number;
+}
+
 const IS_DEV_MODE = process.env.NODE_ENV === 'development'
-const Store = new Vuex.Store({
+
+const Store = new Vuex.Store<GlobalState>({
   mutations,
   modules: {bets},
   strict: IS_DEV_MODE,

@@ -2,8 +2,6 @@ import store from '@/store'
 import {ComponentOptions} from 'vue';
 import auth, {NETWORKS} from '@/layer/auth'
 import { SET_USER, SET_BALANCE } from '@/store/mutation-types';
-const lastId = localStorage.getItem('lastId') || 1;
-let _lastId = Number(lastId)
 
 export default {
   computed: {
@@ -24,11 +22,11 @@ export default {
           localStorage.setItem('provider', provider)
           await this.getBalance()
         } catch (e) {
-          console.error(e)
+          // console.error(e)
         }
       }
 
-      if (auth.hasIdentity && process.env.NODE_ENV != 'development') {
+      if (auth.hasIdentity && process.env.NODE_ENV !== 'development') {
         auth.forgetIdentity()
           .then(callback)
       } else {
@@ -54,13 +52,7 @@ export default {
       return auth.transfer(amount, memo)
     },
     getTableRows() {
-      return auth.getTableRows(_lastId, {limit: 100})
-        .then((data: {rows: any[], more: boolean}) => {
-          const { rows } = data
-          const last = rows[rows.length - 1]
-          localStorage.setItem('lastId', _lastId = last.id)
-          return data
-        })
+      return auth.getTableRows({limit: 100})
     }
   }
 } as ComponentOptions<any>

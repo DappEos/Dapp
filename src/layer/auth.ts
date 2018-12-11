@@ -71,7 +71,7 @@ export class Auth {
     return this.eosPluginRef = plugin
   }
 
-  public async getIdentity(network: any) {
+  public getIdentity(network: any) {
     return Scatter.scatter.getIdentity({
       accounts: [network]
     })
@@ -85,11 +85,11 @@ export class Auth {
       })
   }
 
-  public async forgetIdentity(): Promise<void> {
+  public forgetIdentity(): Promise<void> {
     return Scatter.scatter.forgetIdentity()
   }
 
-  public async transfer(amount: number, memo: string) {
+  public transfer(amount: number, memo: string) {
     const transactionOpts = {
       authorization: [`${_account.name}@${_account.authority}`]
     }
@@ -98,23 +98,42 @@ export class Auth {
       .toString()} EOS`, memo, transactionOpts)
   }
 
-  public async getBalance() {
+  public getBalance() {
     return this.eos.getCurrencyBalance('eosio.token', this.account.name)
       .then((result: any) => {
         return !result[0] ? 0 : parseFloat(result[0].split(' ', 1)[0]).toFixed(4)
       })
   }
 
-  public async getTableRows(start = 1, opts = {}) {
+  public getTableRows(opts = {}) {
     return this.eos.getTableRows({
       json: true,
       code: 'dicedicedice',
       scope: 'dicedicedice',
       table: 'activebets',
-      lower_bound: (opts as any).limit ? 1 : start,
       ...opts
     })
   }
+
+  public getLastId(): Promise<number> {
+    return this.eos.getTableRows({
+      json: true,
+      code: 'dicedicedice',
+      scope: 'dicedicedice',
+      table: 'globalvars',
+      lower_bound: 101,
+      upper_bound: 101
+    }).then((data: {rows: GlobalVars[]}) => {
+      const {rows} = data
+      const lastId = rows[0].val
+      return lastId
+    })
+  }
+}
+
+interface GlobalVars {
+  id: number;
+  val: number;
 }
 
 export default new Auth()
