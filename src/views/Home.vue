@@ -1,12 +1,10 @@
 <template>
   <base-layout class="bg-secondary window-height">
     <div class="row justify-center">
-      <div
-        style="border-radius: 5px;"
-        class="pa-sm text-white bg-primary col-auto"
-      >
-        <i class="el-icon-tickets mr-sm" />
-        <span class="text-weight-bold">{{ balance }}</span> EOS
+      <div class="pa-sm text-white round-borders bg-primary col-auto">
+        <i class="el-icon-tickets mr-sm" style="font-size: 1.2rem;" />
+        <span class="text-weight-bold">{{ balance }}</span>
+        <span class="text-light ml-sm">EOS</span>
       </div>
     </div>
     <el-row class="mt-md" type="flex" justify="center" align="middle">
@@ -319,7 +317,7 @@ export default class Home extends Vue {
             break
           }
         }
-      }, 1000)
+      }, 2000)
     } catch (e) {
       if (e.code === 402) {
         Notification.info({

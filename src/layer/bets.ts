@@ -7,7 +7,11 @@ const sortBet = (result: any) => {
 
 export default {
   async getLast30() {
-    return this.getRecentBets(30)
+    const betId = await auth.getLastId()
+    return this.getRecentBets({
+      limit: 30,
+      lower_bound: betId > 30 ? betId - 29 : 1
+    })
   },
 
   getForUser(user: string) {
@@ -20,7 +24,7 @@ export default {
     }).then(sortBet)
   },
 
-  getRecentBets(limit: number = 30) {
-    return auth.getTableRows({limit}).then(sortBet)
+  getRecentBets(opts: any = {}) {
+    return auth.getTableRows({...opts}).then(sortBet)
   }
 };

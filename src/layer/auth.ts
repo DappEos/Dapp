@@ -121,8 +121,8 @@ export class Auth {
       code: 'dicedicedice',
       scope: 'dicedicedice',
       table: 'globalvars',
-      lower_bound: 101,
-      upper_bound: 101
+      lower_bound: 104,
+      upper_bound: 104
     }).then((data: {rows: GlobalVars[]}) => {
       const {rows} = data
       const lastId = rows[0].val
