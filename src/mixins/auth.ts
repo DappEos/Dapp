@@ -2,11 +2,16 @@ import store from '@/store'
 import {ComponentOptions} from 'vue';
 import auth, {NETWORKS} from '@/layer/auth'
 import { SET_USER, SET_BALANCE } from '@/store/mutation-types';
+import bets from '@/layer/bets';
 
 export default {
   computed: {
     currentUser() {
       return (this as any).$store.state.user
+    },
+    username() {
+      const [user] = (this.currentUser as any).accounts
+      return user.name
     }
   },
   mounted() {
@@ -15,15 +20,16 @@ export default {
     }
   },
   methods: {
+    getUserBets() {
+      return bets.getForUser(this.username)
+    },
     login(provider: string = localStorage.getItem('provider') as string) {
       const callback = async () => {
         try {
           await auth.getIdentity(NETWORKS[provider])
           localStorage.setItem('provider', provider)
           await this.getBalance()
-        } catch (e) {
-          // console.error(e)
-        }
+        } catch (e) {}
       }
 
       if (auth.hasIdentity && process.env.NODE_ENV !== 'development') {
@@ -38,6 +44,7 @@ export default {
         auth.forgetIdentity()
           .then(() => {
             this.$store.commit(SET_USER, null)
+            this.$store.commit(SET_BALANCE, 0)
           })
       }
     },
@@ -50,9 +57,6 @@ export default {
     },
     createTransfer(amount: number, memo: string) {
       return auth.transfer(amount, memo)
-    },
-    getTableRows() {
-      return auth.getTableRows({limit: 100})
     }
   }
 } as ComponentOptions<any>

@@ -19,13 +19,14 @@
 </template>
 
 <script lang="ts">
-import bets from '@/layer/bets';
-import AppTable from '@/components/table';
-import { TableHeader } from '@/components/table';
-import { MD_ARROW_UP,  MD_ARROW_DOWN } from '@/layer/icons';
-import { Vue, Component, Watch } from 'vue-property-decorator';
+import bets from '@/layer/bets'
+import TrackMixin from '@/mixins/track'
+import AppTable from '@/components/table'
+import { TableHeader } from '@/components/table'
+import { Vue, Component, Watch } from 'vue-property-decorator'
 
 @Component({
+  mixins: [TrackMixin],
   components: { AppTable }
 })
 export default class All extends Vue {
@@ -41,28 +42,19 @@ export default class All extends Vue {
   protected async getBets() {
     try {
       const { rows } = await bets.getLast30();
-      this.data = rows.map((row: {payout: number|string[]}) => {
-        row.payout = Number((row.payout as string[])[0].split(' ')[0]);
-        return row;
-      });
+      this.data = rows.map((this as any).formatPayout);
     } catch (e) {}
   }
 
-  protected getArrow(row: {roll_type: number}) {
-    return row.roll_type == 2 ? MD_ARROW_UP : MD_ARROW_DOWN
-  }
-
-  protected isLost(row: { payout: number }) {
-    return row.payout === 0;
+  @Watch('$store.state.user', {immediate: true})
+  protected watchCurrentUser(newVal: any) {
+    if (newVal) {
+      this.getBets();
+    }
   }
 
   protected mounted() {
-    this.getBets();
-  }
-
-  @Watch('$store.state.user')
-  protected watchUserChanged() {
-    this.getBets();
+    this.$root.$on('refresh', () => this.getBets())
   }
 }
 </script>

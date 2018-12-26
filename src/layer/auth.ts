@@ -110,7 +110,7 @@ export class Auth {
       json: true,
       code: 'dicedicedice',
       scope: 'dicedicedice',
-      table: 'activebets',
+      table: 'activebet1s',
       ...opts
     })
   }

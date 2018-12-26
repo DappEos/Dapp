@@ -1,13 +1,16 @@
 <template>
   <base-layout class="bg-secondary window-height">
-    <el-row class="text-center">
-      <el-col>
-        <el-button type="warning">EOS</el-button>
-        <el-button type="primary">DICE</el-button>
-      </el-col>
-    </el-row>
+    <div class="row justify-center">
+      <div
+        style="border-radius: 5px;"
+        class="pa-sm text-white bg-primary col-auto"
+      >
+        <i class="el-icon-tickets mr-sm" />
+        <span class="text-weight-bold">{{ balance }}</span> EOS
+      </div>
+    </div>
     <el-row class="mt-md" type="flex" justify="center" align="middle">
-      <el-col :span="8" class="text-light">
+      <el-col :span="8" :xs="15" class="text-light">
         <el-row type="flex" align="middle">
           <el-col :span="3">
             <img class="vertical-middle" style="width: 2rem; height: 2rem" src="/img/poker-chip-icon.svg" />
@@ -17,7 +20,7 @@
           </el-col>
         </el-row>
       </el-col>
-      <el-col :span="6" class="text-light">
+      <el-col :span="6" :xs="9" class="text-light">
         <el-row type="flex" align="middle">
           <el-col :span="3">
             <eos-logo class="ml-sm" :width="17" :height="25" fill="white" />
@@ -295,17 +298,15 @@ export default class Home extends Vue {
       const range = this.currentThreshold
       const memo = `${this.below ? 1 : 2},${range},diceinviters`
       const $this = this as any
-      const time =
       await $this.createTransfer(this.betAmount, memo)
       const id = setInterval(async () => {
-        let {rows} = await $this.getTableRows()
-        rows = rows.reverse()
+        const {rows} = await $this.getUserBets()
+        this.$root.$emit('refresh')
         for (const row of rows) {
           const found = row.bettor === this.accountName &&
             row.roll_border == this.currentThreshold &&
             (row.roll_value < 100 && row.roll_border == range)
           if (found) {
-            console.log(row)
             clearInterval(id)
             this.rolling = false
             if ((row.roll_type == 1 && row.roll_value < row.roll_border) ||

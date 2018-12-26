@@ -46,34 +46,41 @@
       }
       & {
         flex: #{exponent(10, 4)} 1 0%;
+        -ms-flex: #{exponent(10, 4)} 1 0%;
+        -webkit-box-flex: #{exponent(10, 4)};
       }
       &-auto {
         flex: 0 0 auto;
+        -ms-flex: 0 0 auto;
+        -webkit-box-flex: 0;
       }
       &-grow {
         flex: 1 0 auto;
+        -ms-flex: 1 0 auto;
+        -webkit-box-flex: 1;
       }
     }
-  }
-  @for $i from 1 through $flex-cols {
-    #{fe('.col#name-#i', $name, $noProcNotZero, $i)} {
-      @extend .col#{$name}-auto;
-    }
-    .row {
-      #{fe('> .col#name-#i', $name, $noProcNotZero, $i)} {
-        height: auto;
-        width: unquote('#{$i / $flex-cols * 100}%');
+
+    @for $i from 1 through $flex-cols {
+      #{fe('.col#name-#i', $name, $noProcNotZero, $i)} {
+        @extend .col#{$name}-auto;
       }
-      @if $name != '' {
-        #{fe('> .offset#name-#i', $name, $noProcNotZero, $i)} {
-          margin-left: unquote('#{$i / $flex-cols * 100}%');
+      .row {
+        #{fe('> .col#name-#i', $name, $noProcNotZero, $i)} {
+          height: auto;
+          width: unquote('#{$i / $flex-cols * 100}%');
+        }
+        @if $name != '' or $i != 0 {
+          #{fe('> .offset#name-#i', $name, $noProcNotZero, $i)} {
+            margin-left: unquote('#{$i / $flex-cols * 100}%');
+          }
         }
       }
-    }
-    .column {
-      #{fe('> .col#name-#i', $name, $noProcNotZero, $i)} {
-        height: unquote('#{$i / $flex-cols * 100}%');
-        width: auto;
+      .column {
+        #{fe('> .col#name-#i', $name, $noProcNotZero, $i)} {
+          height: unquote('#{$i / $flex-cols * 100}%');
+          width: auto;
+        }
       }
     }
   }
@@ -216,9 +223,6 @@
     }
     &#{$name} {
       @extend .gutter-x-#{$name}, .gutter-y-#{$name};
-      > div {
-        @extend .gutter-x-#{$name}, .gutter-y-#{$name};
-      }
     }
   }
 }

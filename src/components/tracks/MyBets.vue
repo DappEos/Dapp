@@ -1,10 +1,18 @@
 <template>
   <div>
     <app-table v-if="currentUser" :data="data" :headers="headers">
-      <div slot="col-won" slot-scope="{row}">
-        <div v-if="row.won > 0" class="text-positive">
-          {{ row.won.toFixed(4) }} EOS
-        </div>
+      <div slot="col-roll_border" slot-scope="{row}">
+        <img
+          :src="getArrow(row)"
+          class="vertical-middle"
+          style="width: 1.5rem;"
+        >
+        {{ row.roll_border }}
+      </div>
+      <div slot="col-payout" slot-scope="{row}">
+        <div
+          :class="`text-${isLost(row) ? 'negative' : 'positive'}`"
+        >{{ isLost(row) ? '0' : row.payout }} EOS</div>
       </div>
     </app-table>
     <el-alert
@@ -20,39 +28,39 @@
 <script lang="ts">
 import bets from '@/layer/bets'
 import AuthMixin from '@/mixins/auth'
+import TrackMixin from '@/mixins/track'
 import AppTable from '@/components/table'
-import { Vue, Component, Watch } from 'vue-property-decorator'
+import { Notification } from 'element-ui'
 import { TableHeader } from '@/components/table'
-import { Notification } from 'element-ui';
+import { Vue, Component, Watch } from 'vue-property-decorator'
 
 @Component({
-  mixins: [AuthMixin],
+  mixins: [AuthMixin, TrackMixin],
   components: {AppTable}
 })
 export default class All extends Vue {
   private data: any[] = [];
 
   private headers: TableHeader[] = [
-    {title: 'Roll Under', property: 'per'},
-    {title: 'Bet', property: 'bet'},
-    {title: 'Roll', property: 'roll'},
-    {title: 'Won', property: 'won'},
+    // { title: 'Bettor', property: 'bettor' },
+    { title: 'Roll Border', property: 'roll_border' },
+    { title: 'Bet', property: 'bet_amt' },
+    { title: 'Roll', property: 'roll_value' },
+    { title: 'Payout', property: 'payout' }
   ];
 
-  @Watch('currentUser')
+  @Watch('currentUser', {immediate: true})
   private watchUser(newVal: any) {
     if (newVal) {
-      this.getBets()
+      this.history()
     }
   }
 
-  private async getBets() {
-    if (!(this as any).currentUser) {
-      return
-    }
+  private async history() {
     try {
-      const {data} = await bets.getForUser('eos4betprime')
-      this.data = data.RecentBets
+      const $this = this as any
+      const result = await $this.getUserBets()
+      this.data = result.rows.map($this.formatPayout)
     } catch (e) {
       Notification({
         type: 'error',
@@ -64,7 +72,7 @@ export default class All extends Vue {
   }
 
   private mounted() {
-    this.getBets()
+    this.$root.$on('refresh', () => this.history())
   }
 }
 </script>
