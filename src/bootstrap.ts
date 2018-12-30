@@ -3,14 +3,7 @@ import {
   Container,
   Header,
   Main,
-  Col,
-  Row,
   Button,
-  Menu,
-  MenuItem,
-  Submenu,
-  Card,
-  Slider,
   Table,
   TableColumn,
   Tabs,
@@ -19,7 +12,10 @@ import {
   Alert,
   Input,
   Popover,
-  Radio
+  Radio,
+  DropdownMenu,
+  DropdownItem,
+  Dropdown
 } from 'element-ui'
 
 import VueI18n from 'vue-i18n'
@@ -29,14 +25,7 @@ export default (Vue: VueConstructor) => {
   Vue.use(Header)
   Vue.use(Container)
   Vue.use(Main)
-  Vue.use(Col)
-  Vue.use(Row)
   Vue.use(Button)
-  Vue.use(Menu)
-  Vue.use(MenuItem)
-  Vue.use(Submenu)
-  Vue.use(Card)
-  Vue.use(Slider)
   Vue.use(Table)
   Vue.use(TableColumn)
   Vue.use(Tabs)
@@ -46,4 +35,7 @@ export default (Vue: VueConstructor) => {
   Vue.use(Input)
   Vue.use(Popover)
   Vue.use(Radio)
+  Vue.use(Dropdown)
+  Vue.use(DropdownMenu)
+  Vue.use(DropdownItem)
 }

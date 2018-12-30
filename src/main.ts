@@ -15,7 +15,8 @@ bootstrapComponents(Vue)
 
 const i18n = new VueI18n({
   messages,
-  locale: 'en'
+  locale: 'en',
+  fallbackLocale: 'en'
 })
 
 authLayer.bootstrap()

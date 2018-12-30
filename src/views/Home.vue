@@ -7,102 +7,116 @@
         <span class="text-light ml-sm">EOS</span>
       </div>
     </div>
-    <el-row class="mt-md" type="flex" justify="center" align="middle">
-      <el-col :span="8" :xs="15" class="text-light">
-        <el-row type="flex" align="middle">
-          <el-col :span="3">
-            <img class="vertical-middle" style="width: 2rem; height: 2rem" src="/img/poker-chip-icon.svg" />
-          </el-col>
-          <el-col>
-            <span class="inline-block">BET AMOUNT</span>
-          </el-col>
-        </el-row>
-      </el-col>
-      <el-col :span="6" :xs="9" class="text-light">
-        <el-row type="flex" align="middle">
-          <el-col :span="3">
-            <eos-logo class="ml-sm" :width="17" :height="25" fill="white" />
-          </el-col>
-          <el-col>
-            <span class="inline-block">PAYOUT ON WIN</span>
-          </el-col>
-        </el-row>
-      </el-col>
-    </el-row>
-    <el-row class="my-xs" type="flex" align="middle" justify="center">
-      <el-col class="bg-primary round-borders pa-xs" :span="8">
-        <el-row class="round-borders" type="flex" align="middle">
-          <el-col class="pa-sm round-borders bg-blue-grey-6">
-            <el-row class="px-xs text-white" type="flex" align="bottom">
-              <el-col class="text-left" :span="5">
-                <eos-logo :width="17" :height="25" fill="white" />
-              </el-col>
-              <el-col class="text-center" :span="14">
-                <el-input
-                  class="amount-input"
-                  v-model="betAmount"
-                  :disabled="rolling"
-                />
-              </el-col>
-              <el-col class="text-right text-light" :span="5">
-                <span class="inline-block">EOS</span>
-              </el-col>
-            </el-row>
-          </el-col>
-          <el-col
-            class="text-white ml-sm text-center pa-sm"
-            style="font-size: 1.3rem;"
-            :span="12"
-          >
-            <el-row class="cursor-pointer" type="flex" justify="center">
-              <el-col class="pr-sm">
-                <el-button
-                  class="bg-primary text-white"
-                  size="small"
-                  @click="multiplyBet(0.5)"
-                  :disabled="rolling"
-                >1/2</el-button>
-              </el-col>
-              <el-col class="pl-sm pr-sm border-lr-secondary">
-                <el-button
-                  class="bg-primary text-white"
-                  size="small"
-                  @click="multiplyBet(2)"
-                  :disabled="rolling"
-                >2X</el-button>
-              </el-col>
-              <el-col class="pl-sm">
-                <el-button
-                  class="bg-primary text-white"
-                  size="small"
-                  @click="setMaxAmount()"
-                  :disabled="rolling"
-                >MAX</el-button>
-              </el-col>
-            </el-row>
-          </el-col>
-        </el-row>
-      </el-col>
-      <el-col class="bg-primary round-borders pa-sm ml-sm" :span="6">
-        <el-row class="pa-sm text-white" type="flex" align="bottom">
-          <el-col class="text-left" :span="5">
-            <eos-logo :width="17" :height="25" fill="white" />
-          </el-col>
-          <el-col>
-            <span class="inline-block amount-text">{{ payoutOnWin }}</span>
-            <span class="ml-sm inline-block text-light">EOS</span>
-          </el-col>
-        </el-row>
-      </el-col>
-    </el-row>
-    <el-row class="my-lg" type="flex" justify="center">
-      <el-col class="bg-primary pa-sm round-borders" :span="14">
-        <el-row class="text-white pa-sm" type="flex" align="middle">
-          <el-col class="text-center pa-xs">
+
+    <div class="mt-md row justify-center">
+      <div class="col-7">
+        <div class="text-light row">
+          <div class="col-7">
+            <div class="flex gutter-x-xs items-center">
+              <div class="col-auto">
+                <img class="vertical-middle" style="width: 2rem; height: 2rem" src="/img/poker-chip-icon.svg" />
+              </div>
+              <div class="col-auto">
+                <span class="inline-block">{{ $t('bet_amount') }}</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-5">
+            <div class="flex gutter-x-xs items-center">
+              <div class="col-auto">
+                <eos-logo class="ml-sm" :width="17" :height="25" fill="white" />
+              </div>
+              <div class="col-auto">{{ $t('pay_on_win') }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="my-xs row justify-center">
+      <div class="col-7">
+        <div class="row">
+          <div class="pa-xs col-7">
+            <div class="bg-primary round-borders pa-sm">
+              <div class="row items-center">
+                <div class="bg-blue-grey-6 round-borders col-6">
+                  <div class="pa-sm row justify-between items-end">
+                    <div class="col-1">
+                      <eos-logo
+                        fill="white"
+                        class="mb-xs vertical-middle"
+                        :width="17"
+                        :height="25"
+                      />
+                    </div>
+                    <div class="col-8">
+                      <el-input
+                        class="amount-input"
+                        v-model="betAmount"
+                        :disabled="rolling"
+                      />
+                    </div>
+                    <div class="text-light col-2">EOS</div>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="pa-sm row">
+                    <div class="pr-sm">
+                      <el-button
+                        class="bg-primary text-white"
+                        size="small"
+                        @click="multiplyBet(0.5)"
+                        :disabled="rolling"
+                      >1/2</el-button>
+                    </div>
+                    <div class="pl-sm pr-sm border-lr-secondary">
+                      <el-button
+                        class="bg-primary text-white"
+                        size="small"
+                        @click="multiplyBet(2)"
+                        :disabled="rolling"
+                      >2X</el-button>
+                    </div>
+                    <div class="pl-sm">
+                      <el-button
+                        class="bg-primary text-white"
+                        size="small"
+                        @click="setMaxAmount()"
+                        :disabled="rolling"
+                      >MAX</el-button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="pa-xs col-5">
+            <div class="bg-primary round-borders pa-xs">
+              <div class="pa-sm py-md text-white row gutter-x-xs">
+                <div class="col-2">
+                  <eos-logo :width="17" :height="25" fill="white" />
+                </div>
+                <div class="col-auto">
+                  <span class="inline-block amount-text">{{ payoutOnWin }}</span>
+                  <span class="ml-sm inline-block text-light">EOS</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="my-lg px-xs row justify-center">
+      <div class="bg-primary pa-sm round-borders col-7">
+        <div class="text-white pa-sm row items-center">
+
+          <div class="text-center col-4">
             <div class="columns">
               <div class="column">
                 <span class="inline-blocks text-light">
-                  ROLL {{ below ? 'UNDER' : 'OVER' }} TO WIN
+                  {{ $t(`roll.${below ? 'under' : 'over'}`) }}
                 </span>
               </div>
             </div>
@@ -120,11 +134,12 @@
                 </span>
               </div>
             </div>
-          </el-col>
-          <el-col class="border-lr-secondary text-center pa-xs">
+          </div>
+
+          <div class="border-lr-secondary text-center pa-xs col-4">
             <div class="columns">
               <div class="column">
-                <span class="inline-blocks text-light">PAYOUT</span>
+                <span class="inline-blocks text-light">{{ $t('payout') }}</span>
               </div>
             </div>
             <div class="columns">
@@ -134,11 +149,12 @@
                 </span>
               </div>
             </div>
-          </el-col>
-          <el-col class="text-center pa-xs">
+          </div>
+
+          <div class="text-center pa-xs col-4">
             <div class="columns">
               <div class="column">
-                <span class="inline-blocks text-light">WIN CHANCE</span>
+                <span class="inline-blocks text-light">{{ $t('win_chance') }}</span>
               </div>
             </div>
             <div class="columns">
@@ -148,10 +164,11 @@
                 </span>
               </div>
             </div>
-          </el-col>
-        </el-row>
-      </el-col>
-    </el-row>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="mt-md row justify-center">
       <div class="col-auto">
         <el-button
@@ -182,15 +199,17 @@
         </el-button>
       </div>
     </div>
-    <el-row class="ma-lg px-md" type="flex" justify="center">
-      <el-col :span="15" style="border-radius: 45px;" class="pa-md text-center bg-primary">
+
+    <div class="my-lg row justify-center">
+      <div style="border-radius: 45px;" class="pa-md text-center bg-primary col-7">
         <div class="block">
           <threshold-picker :disabled="rolling" />
         </div>
-      </el-col>
-    </el-row>
-    <el-row type="flex" justify="center">
-      <el-col :span="3" class="text-center">
+      </div>
+    </div>
+
+    <div class="row justify-center">
+      <div class="text-center col-2">
         <button
           v-if="!currentUser"
           class="full-width button is-info is-rounded is-medium"
@@ -205,28 +224,34 @@
           <i v-if="rolling" class="el-icon-loading" />
           <span class="ml-sm">Roll</span>
         </button>
-      </el-col>
-    </el-row>
-    <el-row class="mt-xl" type="flex" justify="center">
-      <el-col :span="9" class="bg-primary pa-sm" style="border-radius: 290486px;">
-        <el-row type="flex" align="middle">
-          <el-col :span="3">
+      </div>
+    </div>
+
+
+    <div class="mt-xl row justify-center">
+      <div class="bg-primary pa-sm col-4" style="border-radius: 290486px;">
+        <div class="row justify-between items-center">
+          <div class="col-auto">
             <img class='vertical-middle app-icon' src="/img/poker-chip-icon.svg" />
-          </el-col>
-          <el-col :span="18" class="ml-sm text-white">
+          </div>
+          <div class="text-white col-9">
             <div>Bet to get: <span class="inline-block text-bold" style="font-size: 1.5rem;">0.0001</span> DICE</div>
             <div class="text-amber-8">Bet now for FREE tokens 100% DICE</div>
-          </el-col>
-          <el-col :span="2" class="text-right cursor-pointer" @click.native="showHelp">
+          </div>
+          <div
+            class="text-right pr-sm cursor-pointer col-auto"
+            @click="showHelp"
+          >
             <img
               src="/img/ios-help-circle-outline.svg"
               class="vertical-middle"
               style="width: 2rem"
             />
-          </el-col>
-        </el-row>
-      </el-col>
-    </el-row>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <tracks class="mt-md" />
   </base-layout>
 </template>
