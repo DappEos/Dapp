@@ -9,7 +9,7 @@
     </div>
 
     <div class="mt-md row justify-center">
-      <div class="col-7">
+      <div class="col-xs-12 col-sm-11 col-md-8 col-lg-7">
         <div class="text-light row">
           <div class="col-7">
             <div class="flex gutter-x-xs items-center">
@@ -34,12 +34,12 @@
     </div>
 
     <div class="my-xs row justify-center">
-      <div class="col-7">
+      <div class="col-xs-12 col-sm-11 col-md-8 col-lg-7">
         <div class="row">
           <div class="pa-xs col-7">
             <div class="bg-primary round-borders pa-sm">
               <div class="row items-center">
-                <div class="bg-blue-grey-6 round-borders col-6">
+                <div class="bg-blue-grey-6 round-borders col-12 col-lg-6">
                   <div class="pa-sm row justify-between items-end">
                     <div class="col-1">
                       <eos-logo
@@ -59,8 +59,8 @@
                     <div class="text-light col-2">EOS</div>
                   </div>
                 </div>
-                <div class="col-6">
-                  <div class="pa-sm row">
+                <div class="col-12 col-lg-6">
+                  <div class="pa-sm row justify-center">
                     <div class="pr-sm">
                       <el-button
                         class="bg-primary text-white"
@@ -109,7 +109,7 @@
     </div>
 
     <div class="my-lg px-xs row justify-center">
-      <div class="bg-primary pa-sm round-borders col-7">
+      <div class="bg-primary pa-sm round-borders col-xs-12 col-sm-11 col-md-8 col-lg-7">
         <div class="text-white pa-sm row items-center">
 
           <div class="text-center col-4">
@@ -201,7 +201,9 @@
     </div>
 
     <div class="my-lg row justify-center">
-      <div style="border-radius: 45px;" class="pa-md text-center bg-primary col-7">
+      <div
+        style="border-radius: 45px;"
+        class="pa-md text-center bg-primary col-xs-12 col-sm-11 col-md-8 col-lg-7">
         <div class="block">
           <threshold-picker :disabled="rolling" />
         </div>
@@ -209,7 +211,7 @@
     </div>
 
     <div class="row justify-center">
-      <div class="text-center col-2">
+      <div class="text-center col-xs-6 col-sm-5 col-md-4 col-lg-2">
         <button
           v-if="!currentUser"
           class="full-width button is-info is-rounded is-medium"
@@ -222,14 +224,17 @@
           @click="roll"
         >
           <i v-if="rolling" class="el-icon-loading" />
-          <span class="ml-sm">Roll</span>
+          <span class="ml-sm">{{ $t('message.roll') }}</span>
         </button>
       </div>
     </div>
 
 
     <div class="mt-xl row justify-center">
-      <div class="bg-primary pa-sm col-4" style="border-radius: 290486px;">
+      <div
+        class="bg-primary pa-sm col-xs-10 col-sm-8 col-md-7 col-lg-4"
+        style="border-radius: 290486px;"
+      >
         <div class="row justify-between items-center">
           <div class="col-auto">
             <img class='vertical-middle app-icon' src="/img/poker-chip-icon.svg" />
@@ -346,7 +351,7 @@ export default class Home extends Vue {
     } catch (e) {
       if (e.code === 402) {
         Notification.info({
-          title: 'Transfer denied',
+          title: this.$t('titles.error.denied') as string,
           message: ''
         })
       } else {

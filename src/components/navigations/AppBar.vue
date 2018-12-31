@@ -57,16 +57,16 @@
       </div>
       <div class="col-auto">
         <div class="row gutter-xs items-center justify-end">
-          <div class="col-auto">
+          <!-- <div class="col-auto">
             <el-button class="text-white" type="text" size="small">Invite</el-button>
-          </div>
+          </div> -->
           <div class="col-auto">
             <el-button
               class="text-white"
               type="text"
               size="small"
               @click="showHelp = true"
-            >How to play?</el-button>
+            >{{ $t('how_to_play') }}</el-button>
           </div>
           <div class="col-auto">
             <el-dropdown class="cursor-pointer" @command="setLang" trigger="click">
@@ -74,9 +74,11 @@
                 {{ currentLocale }} <i class="el-icon-arrow-down el-icon--right" />
               </span>
               <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item command="en">English</el-dropdown-item>
-                <el-dropdown-item command="zh">Chinese</el-dropdown-item>
-                <el-dropdown-item command="ja">Japanese</el-dropdown-item>
+                <el-dropdown-item
+                  v-for="(index) in Object.keys(langMap)"
+                  :key="index"
+                  :command="index"
+                >{{ langMap[index] }}</el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
           </div>
@@ -117,6 +119,7 @@ import { SHOW_HELP } from '@/constants'
 import HelpModal from '@/components/Help.vue'
 import {Vue, Component} from 'vue-property-decorator'
 import AuthMixin from '@/mixins/auth'
+import { map as langMap } from '@/locale'
 
 @Component({
   components: {
@@ -161,22 +164,15 @@ import AuthMixin from '@/mixins/auth'
 export default class AppBar extends Vue {
   protected showHelp = false
   protected showProviders = false
+  protected langMap = Object.assign({}, langMap)
 
   private setLang(lang: string) {
     this.$i18n.locale = lang
   }
 
   public get currentLocale() {
-    let locale = 'English'
-    switch (this.$i18n.locale) {
-      case 'ja':
-        locale = 'Japanese'
-        break
-      case 'zh':
-        locale = 'Chinese'
-        break
-    }
-    return locale
+    const {locale} = this.$i18n
+    return langMap[locale]
   }
 
   private mounted() {
