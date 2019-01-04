@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="row justify-center">
-      <div class="col-xs-12 col-sm-11 col-md-8 col-lg-7">
+      <div class="col-xs-12 col-sm-11 col-md-8 col-lg-8">
         <el-tabs v-model="activePane">
           <el-tab-pane class="text-white" label="ALL BETS" name="all_bets">
             <span slot="label" :class="isActiveClass('all_bets')">

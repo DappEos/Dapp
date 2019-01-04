@@ -19,6 +19,14 @@ body {
   border-right: solid $secondary;
 }
 
+.border-t-secondary {
+  border-top: solid $secondary;
+}
+
+.border-b-secondary {
+  border-bottom: solid $secondary;
+}
+
 .amount-text {
   @extend .text-weight-bold;
   font-size: 1.3rem;

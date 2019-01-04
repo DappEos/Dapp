@@ -1,6 +1,6 @@
 <template>
   <el-container>
-    <el-header class="bg-primary">
+    <el-header class="bg-primary shadow-1">
       <app-bar />
     </el-header>
     <el-main>
