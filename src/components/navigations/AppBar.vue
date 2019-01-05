@@ -9,7 +9,12 @@
           <div class="col-auto">BetDice</div>
         </div>
       </div>
-      <div class="text-white col-auto">
+      <div class="lt-md col-auto">
+        <el-button class="transparent" @click="toggleSide">
+          <i class="el-icon-menu text-white" style="font-size: 1.2rem" />
+        </el-button>
+      </div>
+      <div class="gt-sm text-white col-auto">
         <div class="row items-center">
           <div class="col-auto">
             <el-button
@@ -55,7 +60,7 @@
           </div> -->
         </div>
       </div>
-      <div class="col-auto">
+      <div class="gt-sm col-auto">
         <div class="row gutter-xs items-center justify-end">
           <!-- <div class="col-auto">
             <el-button class="text-white" type="text" size="small">Invite</el-button>
@@ -65,8 +70,8 @@
               class="text-white"
               type="text"
               size="small"
-              @click="showHelp = true"
-            >{{ $t('how_to_play') }}</el-button>
+              @click="layout.toggleHelp"
+            >{{ $t('how_to_play') }}?</el-button>
           </div>
           <div class="col-auto">
             <el-dropdown class="cursor-pointer" @command="setLang" trigger="click">
@@ -109,21 +114,18 @@
         </div>
       </div>
     </div>
-    <help-modal v-model="showHelp" />
   </div>
 </template>
 
 <script lang="ts">
 import {CreateElement} from 'vue'
 import { SHOW_HELP } from '@/constants'
-import HelpModal from '@/components/Help.vue'
-import {Vue, Component} from 'vue-property-decorator'
+import { Vue, Component, Inject, Mixins } from 'vue-property-decorator'
 import AuthMixin from '@/mixins/auth'
-import { map as langMap } from '@/locale'
+import Base from '@/components/layouts/Base.vue';
 
 @Component({
   components: {
-    HelpModal,
     Providers: {
       data: () => ({value: null}),
       methods: {
@@ -158,34 +160,22 @@ import { map as langMap } from '@/locale'
         ])
       }
     }
-  },
-  mixins: [AuthMixin]
+  }
 })
-export default class AppBar extends Vue {
-  protected showHelp = false
+export default class AppBar extends Mixins(AuthMixin) {
   protected showProviders = false
-  protected langMap = Object.assign({}, langMap)
-
-  private setLang(lang: string) {
-    this.$i18n.locale = lang
-  }
-
-  public get currentLocale() {
-    const {locale} = this.$i18n
-    return langMap[locale]
-  }
-
-  private mounted() {
-    this.$root.$on(SHOW_HELP, () => this.showHelp = true)
-  }
+  @Inject('layout')
+  protected layout?: Base;
 
   private signIn(provider: string) {
     this.showProviders = false;
     (this as any).login(provider)
   }
 
-  private openUrl(url: string) {
-    window.open(url, '_blank')
+  private toggleSide() {
+    if (this.layout) {
+      this.layout.toggleSideNav()
+    }
   }
 }
 </script>

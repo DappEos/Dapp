@@ -1,5 +1,5 @@
 export default {
-  how_to_play: 'How to play?',
+  how_to_play: 'How to play',
   payout: 'PAYOUT',
   win_chance: 'WIN CHANCE',
   bet_amount: 'BET AMOUNT ',

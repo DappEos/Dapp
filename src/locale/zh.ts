@@ -1,5 +1,5 @@
 export default {
-  how_to_play: 'How to play?',
+  how_to_play: 'How to play',
   payout: 'JKSJD',
   win_chance: 'ILSKJD',
   bet_amount: 'BET AMOUNT ',

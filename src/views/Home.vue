@@ -11,7 +11,7 @@
     <div class="mt-md row justify-center">
       <div class="col-xs-12 col-sm-11 col-md-8 col-lg-8">
         <div class="text-light row">
-          <div class="col-xs-12 col-sm-11 col-md-7 col-lg-7">
+          <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7">
             <div class="column gutter-y-xs">
               <div class="col-auto">
                 <div class="row gutter-x-xs items-center">
@@ -81,7 +81,7 @@
             </div>
           </div>
 
-          <div class="col-xs-12 col-sm-11 col-md-5 col-lg-5">
+          <div class="col-xs-12 col-sm-12 col-md-5 col-lg-5">
             <div class="column gutter-y-xs">
               <div class="col-auto">
                 <div class="row gutter-x-xs items-center">
@@ -239,7 +239,11 @@
       </div>
     </div>
 
-    <div class="fixed-bottom ma-sm lt-md" style="z-index: 1000;">
+    <div
+      v-if="currentUser"
+      class="fixed-bottom ma-sm lt-md"
+      style="z-index: 1000;"
+    >
       <button
         class="full-width button is-success is-rounded is-medium"
         :disabled="rolling"
@@ -291,12 +295,11 @@ import { Notification } from 'element-ui'
 import Tracks from '@/components/Tracks.vue'
 import EosLogo from '@/components/icons/eos-logo.vue'
 import BaseLayout from '@/components/layouts/Base.vue'
-import { Component, Vue, Watch } from 'vue-property-decorator'
+import { Component, Vue, Watch, Mixins } from 'vue-property-decorator'
 import ThresholdPicker from '@/components/ThresholdPicker.vue'
 import { mapGetters } from 'vuex'
 
 @Component({
-  mixins: [AuthMixin],
   components: {
     Tracks,
     EosLogo,
@@ -304,7 +307,7 @@ import { mapGetters } from 'vuex'
     ThresholdPicker
   }
 })
-export default class Home extends Vue {
+export default class Home extends Mixins(AuthMixin) {
 
   private betAmount: number = 1;
   private rolling = false;

@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-dialog
-      widths="42%"
+      :width="dialogWidth"
       title="How To Play"
       top="5vh"
       custom-class="help-dialog bg-secondary text-white"
@@ -42,6 +42,7 @@
 
 <script lang="ts">
 import {Vue, Component} from 'vue-property-decorator'
+import { debounce } from '@/utils';
 
 @Component({
   props: {
@@ -52,10 +53,38 @@ import {Vue, Component} from 'vue-property-decorator'
   }
 })
 export default class Help extends Vue {
+  private dialogWidth: string = '50vw'
+  private __callback?: () => void;
 
   public close(done: () => void) {
     done()
     this.$emit('input', false)
+  }
+
+  private destroyed() {
+    window.removeEventListener('resize', this.__callback as any)
+  }
+
+  private mounted() {
+    this.__callback = debounce(() => {
+      let width: string = '50vw'
+      const {availWidth} = screen
+      if (availWidth < 575) {
+        width = '90vw'
+      }
+      if (availWidth > 575 && availWidth < 768) {
+        width = '75vw'
+      }
+      if (availWidth > 767 && availWidth < 992) {
+        width = '58vw'
+      }
+      if (availWidth > 991) {
+        width = '50vw'
+      }
+      this.dialogWidth = width
+    })
+    window.addEventListener('resize', this.__callback)
+    this.__callback()
   }
 }
 </script>

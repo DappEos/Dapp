@@ -1,5 +1,5 @@
 export default {
-  how_to_play: 'How to play?',
+  how_to_play: 'How to play',
   payout: '付款',
   win_chance: '赌一下',
   bet_amount: '下注 ',
